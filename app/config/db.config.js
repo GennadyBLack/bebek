@@ -31,6 +31,8 @@ db.unreadMessage = require("../model/unreadMessage.model.js")(
   sequelize,
   Sequelize
 );
+
+db.feed = require("../model/feed.model.js")(sequelize, Sequelize);
 // db.setting = require("../model/setting.model.js")(sequelize, Sequelize);
 
 //?RELATONSHIPS
@@ -48,5 +50,8 @@ db.unreadMessage.belongsTo(db.chat);
 
 db.user.hasMany(db.unreadMessage);
 db.unreadMessage.belongsTo(db.user);
+
+db.user.hasMany(db.feed);
+db.feed.belongsTo(db.user);
 
 module.exports = db;

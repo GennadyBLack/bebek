@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const tokenSecret = "my-token-secret";
 const db = require("../config/db.config.js");
 const User = db.user;
-const Chat = db.chat;
 
 // login
 exports.login = async (req, res) => {
@@ -35,6 +34,7 @@ exports.login = async (req, res) => {
 exports.register = async (req, res) => {
   try {
     const { username, password, email } = req.body;
+    console.log(username, password, email, "here");
     bcrypt.hash(password, rounds, (error, hash) => {
       if (error) res.status(500).json({ error: error });
       else {
@@ -67,11 +67,10 @@ exports.me = async (req, res) => {
   try {
     const user = await User.findOne({
       where: { id: req.user.id },
-      include: "chats",
     })
       .then((user) => {
         if (user) {
-          res.status(200).json({ user: user });
+          res.status(200).json({ data: { user: user } });
         }
       })
       .catch((error) => {

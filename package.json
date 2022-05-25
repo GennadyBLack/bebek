@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client": "cd frontend && npm run serve",
-    "server": "nodemon server.js",
+    "start": "nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],

@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const tokenSecret = "my-token-secret";
 
 const cors = require("cors");
-// const socket = require("socket.io");
 const config = {
   cors: {
     origin: "*",
@@ -13,19 +12,16 @@ const config = {
   },
 };
 const corsOptions = {
-  origin: "http://localhost:4200",
+  origin: "http://localhost:19006",
   optionsSuccessStatus: 200,
 };
 
-// parse requests of content-type - application/json
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/config/db.config.js");
 const User = db.user;
-// force: true will drop the table if it already exists
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Drop and Resync with { force: true }");
   // initial();
@@ -40,11 +36,12 @@ db.sequelize.sync({ force: false }).then(() => {
 //   });
 // }
 
-//=============== Routes====================
+//=============== Routes=========================
 require("./app/route/message.route.js")(app);
 require("./app/route/auth.route.js")(app);
 require("./app/route/user.route.js")(app);
 require("./app/route/chat.route.js")(app);
+require("./app/route/feed.route.js")(app);
 
 app.use(express.static("public"));
 // Create a Server
@@ -58,8 +55,6 @@ var server = http.listen(8081, function () {
   console.log(`App listening at ${port} ${host}`);
 });
 // Static files
-
-// Socket setup
 
 try {
   io.use(function (socket, next) {
@@ -97,28 +92,17 @@ try {
     socket.join(`notify:${socket.userID}`); // подключаем пользователя к своей комнате.
     console.error(`USER CONNECTED ${socket.userID}`);
 
-    // socket.broadcast.emit(`status:${socket?.userID}`, true); //status connect true
-    // socket.emit(`status:${socket.userID}`, true); //status connect true
-
     socket.on("openChat", (data) => {
-      socket.join(`personal:${data.chatId}`); // подключаем пользователя к комнате чата.
+      socket.join(`personal:${data.chatId}`);
     });
     socket.on("typing", (data) => {
       io.to(`personal:${data.chatId}`).emit("typing", data);
-      // socket.broadcast.emit("typing", data);
     });
     socket.on("stopTyping", (data) => {
       io.to(`personal:${data.chatId}`).emit("stopTyping", data);
     });
 
-    // socket.on("joined", async (id) => {
-    //   socket.broadcast.emit("joined", id);
-    // });
-    // socket.on("leave", (id) => {
-    //   socket.broadcast.emit("leave", id);
-    // });
     socket.on("sendMessage", (data) => {
-      // направляем оповещение с сообщением в канал notify
       io.to(`notify:${data.userId}`).emit(`notify:${data.userId}`, data);
       io.to(`personal:${data.chatId}`).emit("sendMessage", data);
     });
