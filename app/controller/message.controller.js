@@ -2,11 +2,9 @@ const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
 const Message = db.message;
 
-// FETCH all boards
 exports.findAll = async (req, res) => {
   const { page } = req.query;
   const { limit, offset } = paginator.getPagination(page);
-  //query
   var condition = {
     where: { chatId: req.params.chatId },
     order: [["id", "DESC"]],
@@ -14,7 +12,6 @@ exports.findAll = async (req, res) => {
   };
   await Message.findAndCountAll({ limit, offset, ...condition })
     .then((messages) => {
-      // Send all tasks to Client
       const response = paginator.getPagingData(messages, page, limit);
       res.send(response);
     })
@@ -23,7 +20,6 @@ exports.findAll = async (req, res) => {
     });
 };
 
-// // Find a Board by Id
 exports.findById = (req, res) => {
   Message.findOne({
     where: { id: req.params.messageId },
@@ -37,7 +33,6 @@ exports.findById = (req, res) => {
     });
 };
 
-// Update a Board
 exports.update = async (req, res) => {
   const id = req.params.messageId;
   await Message.update(
@@ -50,7 +45,6 @@ exports.update = async (req, res) => {
   );
 };
 
-// Delete a Board by Id
 exports.delete = (req, res) => {
   const id = req.params.boardId;
   Message.destroy({

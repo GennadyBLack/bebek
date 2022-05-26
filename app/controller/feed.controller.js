@@ -1,33 +1,54 @@
 const db = require("../config/db.config.js");
+const paginator = require("../helpers/paginationHelpers");
 const Feed = db.feed;
 
 // FETCH all boards
-exports.findAll = (req, res) => {
-  Feed.findAll()
+exports.findAll = async (req, res) => {
+  const { page } = req.query;
+  const { limit, offset } = paginator.getPagination(page);
+
+  const condition = {
+    // where: { chatId: req.params.chatId },
+    // order: [["id", "DESC"]],
+    // include: "user",
+  };
+
+  await Feed.findAndCountAll({ limit, offset, ...condition })
     .then((feed) => {
-      res.send(feed);
+      const response = paginator.getPagingData(feed, page, limit);
+      res.send(response);
     })
     .catch((err) => {
       res.status(500).send("Error -> " + err);
     });
 };
 
-exports.my = (req, res) => {
-  Feed.findAll({
+exports.my = async (req, res) => {
+  const { page } = req.query;
+  const { limit, offset } = paginator.getPagination(page);
+
+  const condition = {
     where: {
       userId: req.user.id,
     },
-  })
+    // order: [["id", "DESC"]],
+    // include: "user",
+  };
+
+  await Feed.findAndCountAll({ limit, offset, ...condition })
     .then((feed) => {
-      res.send(feed);
+      const response = paginator.getPagingData(feed, page, limit);
+      res.send(response);
     })
     .catch((err) => {
       res.status(500).send("Error -> " + err);
     });
 };
 
-exports.findById = (req, res) => {
-  Feed.findByPk(req.params.feedId, { include: { all: true, nested: true } })
+exports.findById = async (req, res) => {
+  await Feed.findByPk(req.params.feedId, {
+    include: { all: true, nested: true },
+  })
     .then((Feed) => {
       res.send(Feed);
     })
@@ -48,9 +69,9 @@ exports.update = async (req, res) => {
   );
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.feedId;
-  Feed.destroy({
+  await Feed.destroy({
     where: { id: id },
   })
     .then(() => {
@@ -61,10 +82,10 @@ exports.delete = (req, res) => {
     });
 };
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   let userId = req?.user?.id;
 
-  Feed.create({
+  await Feed.create({
     ...req?.body,
     userId: userId,
   })
@@ -75,39 +96,3 @@ exports.create = (req, res) => {
       res.status(500).send("Error -> " + err);
     });
 };
-
-// exports.createFeed = async (req, res) => {
-//   try {
-//     if (!req?.body.person) {
-//       throw new Error("Choose person to start a chat");
-//     }
-//     const isChatExist = await Feed.findAll({
-//       where: {
-//         title: [
-//           `${req.body.person}.${req.body.current}`,
-//           `${req.body.current}.${req.body.person}`,
-//         ],
-//       },
-//     });
-//     if (isChatExist.length > 0) {
-//       res.status(420).send("Chat already exists");
-//       return;
-//     }
-
-//Проверка на существующий чат
-//Ищем в userChats чат, в котором есть оба id. Если такой есть, выкидываем ошибку.
-// if (!req?.body.person) {
-//   throw new Error("Choose person to start a chat");
-// }
-
-//     const chat = await Feed.create({
-//       title: `${req.body.current}.${req.body.person}`,
-//     });
-//     chat.setUsers([req.body.current, req.body.person]);
-//     chat.save();
-//     res.status(200).send(chat);
-//   } catch (error) {
-//     res.status(400).send("error man");
-//     console.log(error, "ERROR FROM USER CONROLLER");
-//   }
-// };
