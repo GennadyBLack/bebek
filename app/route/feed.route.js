@@ -1,25 +1,16 @@
+const middleware = require("../middleware/chekToken");
 module.exports = function (app) {
   const feed = require("../controller/feed.controller.js");
 
-  // Retrieve all Feed
   app.get("/api/feeds", feed.findAll);
 
-  // Retrieve a single Board by Id
   app.get("/api/feeds/:feedId", feed.findById);
 
-  // Update a Chat with Id
-  app.patch("/api/feeds/:feedId", feed.update);
+  app.patch("/api/feeds/:feedId", middleware.verify, feed.update);
 
-  // Delete a Customer with Id
-  app.delete("/api/feeds/:feedId", feed.delete);
+  app.delete("/api/feeds/:feedId", middleware.verify, feed.delete);
 
-  //CREATE MESSAGE
-  //   app.post(
-  //     "/api/chats/:chatId/message",
-  //     middleware.verify,
-  //     feed.createMessage
-  //   );
+  app.get("/api/feeds/my", middleware.verify, feed.my);
 
-  //CREATE CHAT
-  app.post("/api/feeds", feed.create);
+  app.post("/api/feeds", middleware.verify, feed.create);
 };

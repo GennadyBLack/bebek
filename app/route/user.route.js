@@ -1,7 +1,6 @@
-
 module.exports = function (app) {
   const user = require("../controller/user.controller.js");
-  const middleware = require('../middleware/chekToken')
+  const middleware = require("../middleware/chekToken");
   // Create a new Task
   // app.post('/api/user', user.create);
 
@@ -21,5 +20,5 @@ module.exports = function (app) {
 
   app.post("/api/users/:userId/chat", user.createChat);
 
-  app.get("/api/me/chats",middleware.verify, user.findUserChats);
+  app.get("/api/me/chats", middleware.verify, user.findUserChats);
 };

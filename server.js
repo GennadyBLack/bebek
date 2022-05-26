@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require("./app/config/db.config.js");
 const User = db.user;
 db.sequelize.sync({ force: false }).then(() => {
-  console.log("Drop and Resync with { force: true }");
+  console.log("Drop and Resync with { force: false }");
   // initial();
 });
 

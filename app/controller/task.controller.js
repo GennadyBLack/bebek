@@ -1,25 +1,11 @@
 const db = require("../config/db.config.js");
-const Feed = db.feed;
+const Task = db.task;
 
 // FETCH all boards
 exports.findAll = (req, res) => {
-  Feed.findAll()
-    .then((feed) => {
-      res.send(feed);
-    })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
-    });
-};
-
-exports.my = (req, res) => {
-  Feed.findAll({
-    where: {
-      userId: req.user.id,
-    },
-  })
-    .then((feed) => {
-      res.send(feed);
+  Task.findAll()
+    .then((task) => {
+      res.send(task);
     })
     .catch((err) => {
       res.status(500).send("Error -> " + err);
@@ -27,9 +13,9 @@ exports.my = (req, res) => {
 };
 
 exports.findById = (req, res) => {
-  Feed.findByPk(req.params.feedId, { include: { all: true, nested: true } })
-    .then((Feed) => {
-      res.send(Feed);
+  Task.findByPk(req.params.taskId, { include: { all: true, nested: true } })
+    .then((Task) => {
+      res.send(Task);
     })
     .catch((err) => {
       res.status(500).send("Error -> " + err);
@@ -37,8 +23,8 @@ exports.findById = (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const id = req.params.feedId;
-  await Feed.update(
+  const id = req.params.taskId;
+  await Task.update(
     { ...req.body.data },
     {
       where: {
@@ -49,8 +35,8 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  const id = req.params.feedId;
-  Feed.destroy({
+  const id = req.params.taskId;
+  Task.destroy({
     where: { id: id },
   })
     .then(() => {
@@ -62,26 +48,41 @@ exports.delete = (req, res) => {
 };
 
 exports.create = (req, res) => {
-  let userId = req?.user?.id;
-
-  Feed.create({
-    ...req?.body,
-    userId: userId,
+  Task.create({
+    ...req.body,
   })
-    .then((feed) => {
-      res.status(200).send(feed);
+    .then(() => {
+      res.status(200).send("Board has been deleted!");
     })
     .catch((err) => {
       res.status(500).send("Error -> " + err);
     });
 };
 
-// exports.createFeed = async (req, res) => {
+// exports.createMessage = (req, res) => {
+//   try {
+//     Chat.findByPk(req.params.chatId)
+//       .then((Chat) => {
+//         Chat.createMessage({
+//           ...req.body,
+//           userId: req.user.id,
+//         });
+//         res.send(Chat);
+//       })
+//       .catch((err) => {
+//         res.status(500).send("Error -> " + err);
+//       });
+//   } catch (error) {
+//     console.log(error, "ERROR FROM USER CONROLLER");
+//   }
+// };
+
+// exports.createTask = async (req, res) => {
 //   try {
 //     if (!req?.body.person) {
 //       throw new Error("Choose person to start a chat");
 //     }
-//     const isChatExist = await Feed.findAll({
+//     const isChatExist = await Task.findAll({
 //       where: {
 //         title: [
 //           `${req.body.person}.${req.body.current}`,
@@ -100,7 +101,7 @@ exports.create = (req, res) => {
 //   throw new Error("Choose person to start a chat");
 // }
 
-//     const chat = await Feed.create({
+//     const chat = await Task.create({
 //       title: `${req.body.current}.${req.body.person}`,
 //     });
 //     chat.setUsers([req.body.current, req.body.person]);
