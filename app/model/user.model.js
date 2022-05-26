@@ -32,6 +32,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       max: 50,
     },
+    avatar: Sequelize.STRING,
   });
 
   return User;

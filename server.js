@@ -4,6 +4,8 @@ var bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const tokenSecret = "my-token-secret";
 
+global.appRoot = __dirname;
+
 const cors = require("cors");
 const config = {
   cors: {

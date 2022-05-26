@@ -14,6 +14,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.ENUM("approved", "unapproved"),
       defaultValue: "unapproved",
     },
+    poster: Sequelize.STRING,
   });
 
   return Feed;
