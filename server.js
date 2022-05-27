@@ -18,7 +18,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "10mb" }));
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -44,6 +44,7 @@ require("./app/route/auth.route.js")(app);
 require("./app/route/user.route.js")(app);
 require("./app/route/chat.route.js")(app);
 require("./app/route/feed.route.js")(app);
+require("./app/route/tool.route.js")(app);
 
 app.use(express.static("public"));
 // Create a Server
