@@ -15,6 +15,7 @@ exports.findAll = async (req, res) => {
 
   await Feed.findAndCountAll({ limit, offset, ...condition })
     .then((feed) => {
+      console.log(feed, "FEED");
       const response = paginator.getPagingData(feed, page, limit);
       res.send(response);
     })
