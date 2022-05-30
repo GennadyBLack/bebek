@@ -33,6 +33,23 @@ module.exports = (sequelize, Sequelize) => {
       max: 50,
     },
     avatar: Sequelize.STRING,
+    tel: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      min: 6,
+      max: 11,
+    },
+    position: {
+      type: Sequelize.STRING,
+      get() {
+        try {
+          const val = this.getDataValue("username");
+          return val.split(".") ?? "";
+        } catch (error) {
+          return "";
+        }
+      },
+    },
   });
 
   return User;
