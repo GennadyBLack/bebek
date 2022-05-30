@@ -60,14 +60,20 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
   const id = req.params.feedId;
-  await Feed.update(
-    { ...req.body.data },
-    {
-      where: {
-        id: id,
-      },
-    }
-  );
+  console.log(id, req.body.data, "THE DAAATAAAA");
+
+  try {
+    await Feed.update(
+      { ...req.body.data },
+      {
+        where: {
+          id: id,
+        },
+      }
+    ).then((feed) => res.status(200).send(feed));
+  } catch (e) {
+    res.status(500).send("Error -> " + err);
+  }
 };
 
 exports.delete = async (req, res) => {
