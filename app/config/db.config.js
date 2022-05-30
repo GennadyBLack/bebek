@@ -33,6 +33,7 @@ db.unreadMessage = require("../model/unreadMessage.model.js")(
 );
 
 db.feed = require("../model/feed.model.js")(sequelize, Sequelize);
+db.comment = require("../model/comment.model.js")(sequelize, Sequelize);
 // db.setting = require("../model/setting.model.js")(sequelize, Sequelize);
 
 //?RELATONSHIPS
@@ -53,5 +54,11 @@ db.unreadMessage.belongsTo(db.user);
 
 db.user.hasMany(db.feed);
 db.feed.belongsTo(db.user);
+
+db.comment.hasMany(db.comment);
+db.comment.belongsTo(db.comment);
+
+db.feed.hasMany(db.comment);
+db.comment.belongsTo(db.user);
 
 module.exports = db;
