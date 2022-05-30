@@ -70,7 +70,7 @@ exports.update = async (req, res) => {
           id: id,
         },
       }
-    ).then((feed) => res.status(200).send(feed));
+    ).then(() => res.status(200).send("Успешно"));
   } catch (e) {
     res.status(500).send("Error -> " + err);
   }
