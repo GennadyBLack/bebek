@@ -34,7 +34,10 @@ db.unreadMessage = require("../model/unreadMessage.model.js")(
 
 db.feed = require("../model/feed.model.js")(sequelize, Sequelize);
 db.comment = require("../model/comment.model.js")(sequelize, Sequelize);
-// db.setting = require("../model/setting.model.js")(sequelize, Sequelize);
+db.quiz = require("../model/quiz/quiz.model.js")(sequelize, Sequelize);
+db.answer = require("../model/quiz/answer.model.js")(sequelize, Sequelize);
+db.question = require("../model/quiz/question.model.js")(sequelize, Sequelize);
+db.result = require("../model/quiz/result.model.js")(sequelize, Sequelize);
 
 //?RELATONSHIPS
 db.user.belongsToMany(db.chat, { through: "userChats" });
@@ -60,5 +63,20 @@ db.comment.belongsTo(db.comment);
 
 db.feed.hasMany(db.comment);
 db.comment.belongsTo(db.user);
+
+//quiz
+db.quiz.hasMany(db.question);
+db.question.belongsTo(db.quiz);
+
+db.question.hasMany(db.answer);
+db.answer.belongsTo(db.question);
+
+db.quiz.hasMany(db.result);
+db.result.belongsTo(db.quiz);
+
+db.result.hasOne(db.user);
+db.user.belongsTo(db.quiz);
+
+//quiz end
 
 module.exports = db;
