@@ -10,6 +10,11 @@ module.exports = (sequelize, Sequelize) => {
       max: 250,
       min: 10,
     },
+    path: {
+      type: Sequelize.STRING,
+      max: 250,
+      min: 10,
+    },
     status: {
       type: Sequelize.ENUM("approved", "unapproved"),
       defaultValue: "unapproved",

@@ -18,6 +18,7 @@ exports.upload = async (req, res) => {
   //по идее нужно feed переименовать в post, наверное, и создать отдельную таблицу feed (ну или оставить посты прикрепленными к юзеру как сейчас)
   await Feed.create({
     ...req.body,
+    path: `${global.appRoot}/${filePath}`,
   })
     .then(() => {
       //возвращаем путь в ответе
