@@ -5,4 +5,5 @@ module.exports = function (app) {
   app.post("/api/auth/login", auth.login);
   app.post("/api/auth/register", auth.register);
   app.post("/api/auth/me", middleware.verify, auth.me);
+  app.patch("/api/auth/me", middleware.verify, auth.updateMe);
 };

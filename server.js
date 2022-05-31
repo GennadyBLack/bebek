@@ -25,7 +25,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require("./app/config/db.config.js");
 const User = db.user;
 db.sequelize.sync({ force: false }).then(() => {
-  console.log("Drop and Resync with { force: false }");
+  console.log(
+    `
+    
+    
+    
+    <===========================================================RESET SERVER BITCH=========================================================>
+    
+    
+    
+    `
+  );
   // initial();
 });
 
@@ -34,7 +44,6 @@ db.sequelize.sync({ force: false }).then(() => {
 //     username: "admin",
 //     email: "admin@mail.ru",
 //     password: "admin",
-//     role: "admin",
 //   });
 // }
 
@@ -45,6 +54,10 @@ require("./app/route/user.route.js")(app);
 require("./app/route/chat.route.js")(app);
 require("./app/route/feed.route.js")(app);
 require("./app/route/tool.route.js")(app);
+require("./app/route/quiz.route.js")(app);
+require("./app/route/answer.route.js")(app);
+require("./app/route/question.route.js")(app);
+require("./app/route/result.route.js")(app);
 
 app.use(express.static("public"));
 // Create a Server
@@ -54,8 +67,6 @@ const io = require("socket.io")(http, config);
 var server = http.listen(8081, function () {
   var host = server.address().host;
   var port = server.address().port;
-
-  console.log(`App listening at ${port} ${host}`);
 });
 // Static files
 

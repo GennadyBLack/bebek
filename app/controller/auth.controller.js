@@ -34,7 +34,6 @@ exports.login = async (req, res) => {
 exports.register = async (req, res) => {
   try {
     const { username, password, email } = req.body;
-    console.log(username, password, email, "here");
     bcrypt.hash(password, rounds, (error, hash) => {
       if (error) res.status(500).json({ error: error });
       else {
@@ -65,7 +64,7 @@ function generateToken(user) {
 //me
 exports.me = async (req, res) => {
   try {
-    const user = await User.findOne({
+    await User.findOne({
       where: { id: req.user.id },
     })
       .then((user) => {
@@ -78,5 +77,21 @@ exports.me = async (req, res) => {
       });
   } catch (error) {
     res.status(500).json({ error: error });
+  }
+};
+
+exports.updateMe = async (req, res) => {
+  const id = req.user.id;
+  try {
+    await User.update(
+      { ...req.body.data },
+      {
+        where: {
+          id: id,
+        },
+      }
+    ).then(() => res.status(200).send("Успешно"));
+  } catch (e) {
+    res.status(500).send("Error -> " + err);
   }
 };

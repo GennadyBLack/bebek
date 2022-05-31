@@ -1,6 +1,6 @@
 const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
-const Feed = db.feed;
+const Question = db.question;
 
 // FETCH all boards
 exports.findAll = async (req, res) => {
@@ -13,9 +13,9 @@ exports.findAll = async (req, res) => {
     // include: "user",
   };
 
-  await Feed.findAndCountAll({ limit, offset, ...condition })
-    .then((feed) => {
-      const response = paginator.getPagingData(feed, page, limit);
+  await Question.findAndCountAll({ limit, offset, ...condition })
+    .then((question) => {
+      const response = paginator.getPagingData(question, page, limit);
       res.send(response);
     })
     .catch((err) => {
@@ -35,9 +35,9 @@ exports.my = async (req, res) => {
     // include: "user",
   };
 
-  await Feed.findAndCountAll({ limit, offset, ...condition })
-    .then((feed) => {
-      const response = paginator.getPagingData(feed, page, limit);
+  await Question.findAndCountAll({ limit, offset, ...condition })
+    .then((question) => {
+      const response = paginator.getPagingData(question, page, limit);
       res.send(response);
     })
     .catch((err) => {
@@ -46,11 +46,11 @@ exports.my = async (req, res) => {
 };
 
 exports.findById = async (req, res) => {
-  await Feed.findByPk(req.params.feedId, {
+  await Question.findByPk(req.params.questionId, {
     include: { all: true, nested: true },
   })
-    .then((Feed) => {
-      res.send(Feed);
+    .then((Question) => {
+      res.send(Question);
     })
     .catch((err) => {
       res.status(500).send("Error -> " + err);
@@ -58,10 +58,10 @@ exports.findById = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const id = req.params.feedId;
+  const id = req.params.questionId;
 
   try {
-    await Feed.update(
+    await Question.update(
       { ...req.body.data },
       {
         where: {
@@ -75,8 +75,8 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  const id = req.params.feedId;
-  await Feed.destroy({
+  const id = req.params.questionId;
+  await Question.destroy({
     where: { id: id },
   })
     .then(() => {
@@ -90,12 +90,12 @@ exports.delete = async (req, res) => {
 exports.create = async (req, res) => {
   let userId = req?.user?.id;
 
-  await Feed.create({
+  await Question.create({
     ...req?.body,
     userId: userId,
   })
-    .then((feed) => {
-      res.status(200).send(feed);
+    .then((question) => {
+      res.status(200).send(question);
     })
     .catch((err) => {
       res.status(500).send("Error -> " + err);
