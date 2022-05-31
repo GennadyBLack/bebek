@@ -46,7 +46,7 @@ exports.my = async (req, res) => {
 };
 
 exports.findById = async (req, res) => {
-  await Question.findByPk(req.params.questionId, {
+  await Question.findByPk(req.params.questId, {
     include: { all: true, nested: true },
   })
     .then((Question) => {
@@ -58,7 +58,7 @@ exports.findById = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const id = req.params.questionId;
+  const id = req.params.questId;
 
   try {
     await Question.update(
@@ -75,7 +75,7 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  const id = req.params.questionId;
+  const id = req.params.questId;
   await Question.destroy({
     where: { id: id },
   })
@@ -88,8 +88,6 @@ exports.delete = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  console.log(req.params, "REQ");
-  console.log(req.body, "REQ BODYU");
   let quizId = req?.params?.quizId;
 
   await Question.create({
