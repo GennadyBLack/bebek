@@ -16,18 +16,7 @@ exports.upload = async (req, res) => {
   //записываем файл
   fs.writeFileSync(fileName, buf);
   //по идее нужно feed переименовать в post, наверное, и создать отдельную таблицу feed (ну или оставить посты прикрепленными к юзеру как сейчас)
-  await Feed.create({
-    ...req.body,
-    path: `${global.appRoot}/${filePath}`,
-  })
-    .then(() => {
-      //возвращаем путь в ответе
-      res.status(200).send(`${fileName}`);
-      // res.status(200).send("Feed has been created!");
-    })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
-    });
+  res.status(200).send(`${fileName}`);
 };
 
 exports.files = async (req, res) => {

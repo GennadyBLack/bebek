@@ -8,6 +8,7 @@ exports.findAll = async (req, res) => {
   const { limit, offset } = paginator.getPagination(page);
 
   const condition = {
+    include: { all: true, nested: true },
     // where: { chatId: req.params.chatId },
     // order: [["id", "DESC"]],
     // include: "user",
@@ -50,7 +51,7 @@ exports.findById = async (req, res) => {
     include: { all: true, nested: true },
   })
     .then((Quiz) => {
-      res.send(Quiz);
+      res.status(200).send(Quiz);
     })
     .catch((err) => {
       res.status(500).send("Error -> " + err);

@@ -4,11 +4,11 @@ module.exports = function (app) {
 
   app.get("/api/quiz", quiz.findAll);
 
-  app.get("/api/quiz/:feedId", quiz.findById);
+  app.get("/api/quiz/:quizId", quiz.findById);
 
-  app.patch("/api/quiz/:feedId", middleware.verify, quiz.update);
+  app.patch("/api/quiz/:quizId", middleware.verify, quiz.update);
 
-  app.delete("/api/quiz/:feedId", middleware.verify, quiz.delete);
+  app.delete("/api/quiz/:quizId", middleware.verify, quiz.delete);
 
   app.get("/api/quiz/my", middleware.verify, quiz.my);
 

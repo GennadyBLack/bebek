@@ -4,13 +4,13 @@ module.exports = function (app) {
 
   app.get("/api/questions", question.findAll);
 
-  app.get("/api/questions/:feedId", question.findById);
+  app.get("/api/questions/:questId", question.findById);
 
-  app.patch("/api/questions/:feedId", middleware.verify, question.update);
+  app.patch("/api/questions/:questId", middleware.verify, question.update);
 
-  app.delete("/api/questions/:feedId", middleware.verify, question.delete);
+  app.delete("/api/questions/:questId", middleware.verify, question.delete);
 
   app.get("/api/questions/my", middleware.verify, question.my);
 
-  app.post("/api/questions", middleware.verify, question.create);
+  app.post("/api/questions/:quizId", middleware.verify, question.create);
 };

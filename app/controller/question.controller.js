@@ -88,11 +88,13 @@ exports.delete = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  let userId = req?.user?.id;
+  console.log(req.params, "REQ");
+  console.log(req.body, "REQ BODYU");
+  let quizId = req?.params?.quizId;
 
   await Question.create({
     ...req?.body,
-    userId: userId,
+    quizId,
   })
     .then((question) => {
       res.status(200).send(question);
