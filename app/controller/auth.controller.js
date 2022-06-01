@@ -26,7 +26,7 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: error });
       });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ error: error });
   }
 };
 
@@ -91,7 +91,7 @@ exports.updateMe = async (req, res) => {
         },
       }
     ).then(() => res.status(200).send("Успешно"));
-  } catch (e) {
-    res.status(500).send("Error -> " + err);
+  } catch (error) {
+    res.status(500).json({ error: error });
   }
 };

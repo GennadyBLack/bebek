@@ -22,7 +22,7 @@ exports.findAll = (req, res) => {
       res.send(response);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -33,7 +33,7 @@ exports.findById = (req, res) => {
       res.send(User);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -49,7 +49,7 @@ exports.update = (req, res) => {
       res.status(200).send(User);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -63,7 +63,7 @@ exports.delete = (req, res) => {
       res.status(200).send("Task has been deleted!");
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 exports.test = (req, res) => {
@@ -73,7 +73,7 @@ exports.test = (req, res) => {
       res.send(users);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -87,7 +87,7 @@ exports.createChat = (req, res) => {
         res.send(User);
       })
       .catch((err) => {
-        res.status(500).send("Error -> " + err);
+        res.status(500).json({ error: err });
       });
   } catch (error) {
     console.log(error, "ERROR FROM USER CONROLLER");
@@ -102,6 +102,6 @@ exports.findUserChats = async (req, res) => {
 
     res.status(200).send(chats);
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ error: error });
   }
 };

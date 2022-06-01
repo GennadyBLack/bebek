@@ -42,8 +42,8 @@ exports.delete = (req, res) => {
     .then(() => {
       res.status(200).send("Board has been deleted!");
     })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
+    .catch((error) => {
+      res.status(500).json({ error: error });
     });
 };
 
@@ -61,7 +61,7 @@ exports.createMessage = (req, res) => {
         res.status(500).send("Error -> " + err);
       });
   } catch (error) {
-    console.log(error, "ERROR FROM USER CONROLLER");
+    res.status(500).json({ error: error });
   }
 };
 
@@ -96,7 +96,7 @@ exports.createChat = async (req, res) => {
     chat.save();
     res.status(200).send(chat);
   } catch (error) {
-    res.status(400).send("error man");
+    res.status(500).json({ error: error });
     console.log(error, "ERROR FROM USER CONROLLER");
   }
 };

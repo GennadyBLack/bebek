@@ -15,8 +15,8 @@ exports.findAll = async (req, res) => {
       const response = paginator.getPagingData(messages, page, limit);
       res.send(response);
     })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
+    .catch((error) => {
+      res.status(500).json({ error: error });
     });
 };
 
@@ -29,7 +29,7 @@ exports.findById = (req, res) => {
       res.send(Message);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -54,6 +54,6 @@ exports.delete = (req, res) => {
       res.status(200).send("Board has been deleted!");
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };

@@ -20,7 +20,7 @@ exports.findAll = async (req, res) => {
       res.send(response);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -42,7 +42,7 @@ exports.my = async (req, res) => {
       res.send(response);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -54,7 +54,7 @@ exports.findById = async (req, res) => {
       res.status(200).send(Quiz);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -71,7 +71,7 @@ exports.update = async (req, res) => {
       }
     ).then(() => res.status(200).send("Успешно"));
   } catch (e) {
-    res.status(500).send("Error -> " + err);
+    res.status(500).json({ error: e });
   }
 };
 
@@ -84,7 +84,7 @@ exports.delete = async (req, res) => {
       res.status(200).send("Board has been deleted!");
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -99,6 +99,6 @@ exports.create = async (req, res) => {
       res.status(200).send(quiz);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };

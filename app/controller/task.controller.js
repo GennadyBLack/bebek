@@ -12,7 +12,7 @@ exports.findAll = (req, res) => {
       res.send(response);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -22,7 +22,7 @@ exports.findById = (req, res) => {
       res.send(Task);
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -47,7 +47,7 @@ exports.delete = (req, res) => {
       res.status(200).send("Board has been deleted!");
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };
 
@@ -59,6 +59,6 @@ exports.create = (req, res) => {
       res.status(200).send("Board has been deleted!");
     })
     .catch((err) => {
-      res.status(500).send("Error -> " + err);
+      res.status(500).json({ error: err });
     });
 };

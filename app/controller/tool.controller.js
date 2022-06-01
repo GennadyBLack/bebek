@@ -20,8 +20,12 @@ exports.upload = async (req, res) => {
 };
 
 exports.files = async (req, res) => {
+  try {
+    res.sendFile(
+      path.join(`${global.appRoot}/app/uploads/`, `${req.params.file}`)
+    );
+  } catch (error) {
+    res.status(500).json({ error: err });
+  }
   //по запросу возвращаем файл
-  res.sendFile(
-    path.join(`${global.appRoot}/app/uploads/`, `${req.params.file}`)
-  );
 };

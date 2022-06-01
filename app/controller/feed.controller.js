@@ -18,8 +18,8 @@ exports.findAll = async (req, res) => {
       const response = paginator.getPagingData(feed, page, limit);
       res.send(response);
     })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
+    .catch((error) => {
+      res.status(500).json({ error: error });
     });
 };
 
@@ -40,8 +40,8 @@ exports.my = async (req, res) => {
       const response = paginator.getPagingData(feed, page, limit);
       res.send(response);
     })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
+    .catch((error) => {
+      res.status(500).json({ error: error });
     });
 };
 
@@ -52,8 +52,8 @@ exports.findById = async (req, res) => {
     .then((Feed) => {
       res.send(Feed);
     })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
+    .catch((error) => {
+      res.status(500).json({ error: error });
     });
 };
 
@@ -69,8 +69,8 @@ exports.update = async (req, res) => {
         },
       }
     ).then(() => res.status(200).send("Успешно"));
-  } catch (e) {
-    res.status(500).send("Error -> " + err);
+  } catch (error) {
+    res.status(500).json({ error: error });
   }
 };
 
@@ -82,8 +82,8 @@ exports.delete = async (req, res) => {
     .then(() => {
       res.status(200).send("Board has been deleted!");
     })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
+    .catch((error) => {
+      res.status(500).json({ error: error });
     });
 };
 
@@ -97,7 +97,7 @@ exports.create = async (req, res) => {
     .then((feed) => {
       res.status(200).send(feed);
     })
-    .catch((err) => {
-      res.status(500).send("Error -> " + err);
+    .catch((error) => {
+      res.status(500).json({ error: error });
     });
 };
