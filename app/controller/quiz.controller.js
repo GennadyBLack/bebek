@@ -60,10 +60,10 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
   const id = req.params.quizId;
-
+  console.log(req.params, req.body, "REQ");
   try {
     await Quiz.update(
-      { ...req.body.data },
+      { ...req.body },
       {
         where: {
           id: id,
