@@ -50,6 +50,10 @@ module.exports = (sequelize, Sequelize) => {
         }
       },
     },
+    menu: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      defaultValue: ["Profile", "Feed", "Quiz"],
+    },
   });
 
   return User;

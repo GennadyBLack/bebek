@@ -88,11 +88,8 @@ exports.delete = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  let userId = req?.user?.id;
-
   await Answer.create({
     ...req?.body,
-    userId: userId,
   })
     .then((answer) => {
       res.status(200).send(answer);
