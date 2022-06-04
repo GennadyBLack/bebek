@@ -3,6 +3,8 @@ var app = express();
 var bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const tokenSecret = "my-token-secret";
+const bcrypt = require("bcrypt");
+const rounds = 10;
 
 global.appRoot = __dirname;
 
@@ -24,7 +26,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/config/db.config.js");
 const User = db.user;
-db.sequelize.sync({ force: false }).then(() => {
+const force = false;
+
+db.sequelize.sync({ force: force }).then(() => {
   console.log(
     `
     
@@ -36,16 +40,40 @@ db.sequelize.sync({ force: false }).then(() => {
     
     `
   );
-  // initial();
+  if (force) {
+    initial();
+  }
 });
 
-// function initial() {
-//   const user = User.create({
-//     username: "admin",
-//     email: "admin@mail.ru",
-//     password: "admin",
-//   });
-// }
+function initial() {
+  try {
+    const password = "tester";
+    const username = "tester";
+    const email = "tester@mail.ru";
+
+    bcrypt.hash(password, rounds, (error, hash) => {
+      if (error) res.status(500).json({ error: error });
+      else {
+        const newUser = User.build({
+          email: email,
+          password: hash,
+          username: username,
+          status: true,
+        });
+        newUser
+          .save()
+          .then((user) => {
+            console.log("user has avtomatic created");
+          })
+          .catch((error) => {
+            comsole.log(error, "FROM INITIAL FUNCTION IN SERVER");
+          });
+      }
+    });
+  } catch (error) {
+    comsole.log(error, "FROM INITIAL FUNCTION IN SERVER");
+  }
+}
 
 //=============== Routes=========================
 require("./app/route/message.route.js")(app);
