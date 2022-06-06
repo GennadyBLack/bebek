@@ -5,10 +5,10 @@ module.exports = (sequelize, Sequelize) => {
       max: 140,
       min: 4,
     },
-    // right: {
-    //   type: Sequelize.BOOLEAN,
-    //   defaultValue: false,
-    // },
+    right: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   });
 
   return Answer;
