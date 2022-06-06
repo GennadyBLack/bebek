@@ -75,7 +75,7 @@ db.quiz.hasMany(db.result);
 db.result.belongsTo(db.quiz);
 
 db.result.hasOne(db.user);
-db.user.belongsTo(db.quiz);
+db.user.belongsTo(db.result);
 
 //quiz end
 
