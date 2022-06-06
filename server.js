@@ -28,7 +28,7 @@ const db = require("./app/config/db.config.js");
 const User = db.user;
 const force = false;
 
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ force }).then(() => {
   console.log(
     `
     

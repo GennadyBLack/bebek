@@ -4,10 +4,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     right: {
-      type: Sequelize.STRING,
+      type: Sequelize.ARRAY(Sequelize.INTEGER),
     },
     wrong: {
-      type: Sequelize.STRING,
+      type: Sequelize.ARRAY(Sequelize.INTEGER),
     },
   });
 
