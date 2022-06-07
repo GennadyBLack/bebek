@@ -1,5 +1,6 @@
 const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
+const gueryHelper = require("../helpers/queryHelper");
 const Quiz = db.quiz;
 const User = db.user;
 
@@ -14,15 +15,15 @@ exports.findAll = async (req, res) => {
     // order: [["id", "DESC"]],
     // include: "user",
   };
-
-  await Quiz.findAndCountAll({ limit, offset, ...condition })
-    .then((quiz) => {
-      const response = paginator.getPagingData(quiz, page, limit);
-      res.send(response);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
-    });
+  await gueryHelper(Quiz, req, res);
+  // await Quiz.findAndCountAll({ limit, offset, ...condition })
+  //   .then((quiz) => {
+  //     const response = paginator.getPagingData(quiz, page, limit);
+  //     res.send(response);
+  //   })
+  //   .catch((err) => {
+  //     res.status(500).json({ error: err });
+  //   });
 };
 
 exports.my = async (req, res) => {

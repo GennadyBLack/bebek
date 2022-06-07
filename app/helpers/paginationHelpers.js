@@ -1,6 +1,5 @@
-exports.getPagination = (page) => {
-  //максимальное количество записей за раз
-  const limit = 25;
+exports.getPagination = (page, limit = 25) => {
+  //limit - максимальное количество записей за раз
   //сколько нужно пропустить записей в запросе в зависимости от страницы
   const offset = page ? page * limit : 0;
   return { limit, offset };

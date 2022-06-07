@@ -63,6 +63,7 @@ function generateToken(user) {
 }
 //me
 exports.me = async (req, res) => {
+  console.log(req.bitches);
   try {
     await User.findOne({
       where: { id: req.user.id },

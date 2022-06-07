@@ -12,7 +12,6 @@ exports.findAll = async (req, res) => {
     // order: [["id", "DESC"]],
     // include: "user",
   };
-
   await Question.findAndCountAll({ limit, offset, ...condition })
     .then((question) => {
       const response = paginator.getPagingData(question, page, limit);
