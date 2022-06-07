@@ -74,8 +74,8 @@ db.answer.belongsTo(db.question);
 db.quiz.hasMany(db.result);
 db.result.belongsTo(db.quiz);
 
-db.result.hasOne(db.user);
-db.user.belongsTo(db.result);
+db.user.hasMany(db.result);
+db.result.belongsTo(db.user);
 
 //quiz end
 

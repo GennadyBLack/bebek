@@ -41,14 +41,14 @@ module.exports = (sequelize, Sequelize) => {
     },
     position: {
       type: Sequelize.STRING,
-      get() {
-        try {
-          const val = this.getDataValue("username");
-          return val.split(".") ?? "";
-        } catch (error) {
-          return "";
-        }
-      },
+      // get() {
+      //   try {
+      //     const val = this.getDataValue("username");
+      //     return val.split(".") ?? "";
+      //   } catch (error) {
+      //     return "";
+      //   }
+      // },
     },
     menu: {
       type: Sequelize.ARRAY(Sequelize.STRING),

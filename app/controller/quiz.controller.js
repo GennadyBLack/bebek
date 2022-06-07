@@ -1,6 +1,7 @@
 const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
 const Quiz = db.quiz;
+const User = db.user;
 
 // FETCH all boards
 exports.findAll = async (req, res) => {
@@ -47,15 +48,20 @@ exports.my = async (req, res) => {
 };
 
 exports.findById = async (req, res) => {
-  await Quiz.findByPk(req.params.quizId, {
-    include: { all: true, nested: true },
-  })
-    .then((Quiz) => {
-      res.status(200).send(Quiz);
+  try {
+    await Quiz.findByPk(req.params.quizId, {
+      include: { all: true, nested: true },
     })
-    .catch((err) => {
-      res.status(500).json({ error: err });
-    });
+      .then((Quiz) => {
+        res.status(200).send(Quiz);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: err });
+  }
 };
 
 exports.update = async (req, res) => {
@@ -101,4 +107,16 @@ exports.create = async (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: err });
     });
+};
+
+exports.createResult = async (req, res) => {
+  const id = req.params.quizId;
+  await User.findByPk(req.user.id).then((response) => {
+    response.createResult({ quizId: id }).then((r) => res.status(200).send(r));
+  });
+  try {
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error: error });
+  }
 };
