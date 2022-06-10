@@ -2,7 +2,7 @@ const searchBuilder = require("sequelize-search-builder");
 const db = require("../config/db.config");
 const queryHelper = async (model, req, res) => {
   // Set req.query param to Search Builder constructor
-  console.log(Object.keys(db.quiz), "MODEL");
+  // console.log(Object.keys(db.quiz), "MODEL");
   const query = {};
   for (const key in req.query) {
     if (typeof req.query[key] === "string") {
@@ -20,16 +20,16 @@ const queryHelper = async (model, req, res) => {
     // ],
     limitQuery = search.getLimitQuery(),
     offsetQuery = search.getOffsetQuery();
-  return res.send(orderQuery);
-  // return res.send({
-  //   data: await model.findAll({
-  //     include: [{ all: true, nested: true }],
-  //     where: whereQuery,
-  //     order: orderQuery,
-  //     limit: limitQuery,
-  //     offset: offsetQuery,
-  //     logging: console.log,
-  //   }),
-  // });
+  // return res.send(orderQuery);
+  return res.send({
+    data: await model.findAll({
+      include: [{ all: true, nested: true }],
+      where: whereQuery,
+      order: orderQuery,
+      limit: limitQuery,
+      offset: offsetQuery,
+      logging: console.log,
+    }),
+  });
 };
 module.exports = queryHelper;
