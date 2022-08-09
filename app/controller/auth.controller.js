@@ -63,7 +63,6 @@ function generateToken(user) {
 }
 //me
 exports.me = async (req, res) => {
-  console.log(req.bitches);
   try {
     await User.findOne({
       where: { id: req.user.id },
@@ -82,10 +81,10 @@ exports.me = async (req, res) => {
 };
 
 exports.updateMe = async (req, res) => {
-  const id = req.user.id;
+  const id = req?.user?.id;
   try {
     await User.update(
-      { ...req.body.data },
+      { ...req?.body?.data },
       {
         where: {
           id: id,

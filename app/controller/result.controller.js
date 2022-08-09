@@ -59,18 +59,23 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
   const id = req.params.resultId;
-
+  console.log(
+    req.body,
+    "req.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.body"
+  );
   try {
     await Result.update(
-      { ...req.body.data },
+      { ...req.body },
       {
         where: {
           id: id,
         },
       }
-    ).then(() => res.status(200).send("Успешно"));
+    )
+      .then(() => res.status(200).send("Успешно"))
+      .catch((e) => res.status(400).json({ error: e }));
   } catch (e) {
-    res.status(500).json({ error: e });
+    res.status(400).json({ error: e });
   }
 };
 
