@@ -58,7 +58,8 @@ exports.findById = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const id = req.params.resultId;
+  // const id = req.params.resultId;
+  const id = req.params.quizId;
   console.log(
     req.body,
     "req.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.body"
@@ -94,10 +95,12 @@ exports.delete = async (req, res) => {
 
 exports.create = async (req, res) => {
   let userId = req?.user?.id;
+  let quizId = req?.quiz?.id;
 
   await Result.create({
     ...req?.body,
     userId: userId,
+    quizId: quizId,
   })
     .then((result) => {
       res.status(200).send(result);
