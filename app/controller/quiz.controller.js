@@ -84,11 +84,12 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const id = req.params.quizId;
+  console.log(req.params);
   await Quiz.destroy({
-    where: { id: id },
+    where: { id },
   })
     .then(() => {
-      res.status(200).send("Board has been deleted!");
+      res.status(200).send("Quiz has been deleted!");
     })
     .catch((err) => {
       res.status(500).json({ error: err });

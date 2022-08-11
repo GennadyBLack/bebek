@@ -1,5 +1,6 @@
 const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
+const gueryHelper = require("../helpers/queryHelper");
 const Result = db.result;
 
 // FETCH all boards
@@ -8,19 +9,20 @@ exports.findAll = async (req, res) => {
   const { limit, offset } = paginator.getPagination(page);
 
   const condition = {
+    include: { all: true, nested: true },
     // where: { chatId: req.params.chatId },
     // order: [["id", "DESC"]],
     // include: "user",
   };
-
-  await Result.findAndCountAll({ limit, offset, ...condition })
-    .then((result) => {
-      const response = paginator.getPagingData(result, page, limit);
-      res.send(response);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
-    });
+  await gueryHelper(Result, req, res);
+  // await Result.findAndCountAll({ limit, offset, ...condition })
+  //   .then((result) => {
+  //     const response = paginator.getPagingData(result, page, limit);
+  //     res.send(response);
+  //   })
+  //   .catch((err) => {
+  //     res.status(500).json({ error: err });
+  //   });
 };
 
 exports.my = async (req, res) => {
@@ -95,8 +97,8 @@ exports.delete = async (req, res) => {
 
 exports.create = async (req, res) => {
   let userId = req?.user?.id;
-  let quizId = req?.quiz?.id;
-
+  let quizId = req?.body.quizId;
+  console.log(req, "req");
   await Result.create({
     ...req?.body,
     userId: userId,
