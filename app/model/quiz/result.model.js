@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) => {
     wrong: {
       type: Sequelize.ARRAY(Sequelize.INTEGER),
     },
+    completed: {
+      type: Sequelize.BOOLEAN,
+    },
   });
 
   return Result;

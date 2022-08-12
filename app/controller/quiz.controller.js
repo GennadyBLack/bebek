@@ -112,11 +112,14 @@ exports.create = async (req, res) => {
 };
 
 exports.createResult = async (req, res) => {
-  const id = req.params.quizId;
-  await User.findByPk(req.user.id).then((response) => {
-    response.createResult({ quizId: id }).then((r) => res.status(200).send(r));
-  });
   try {
+    const id = req.params.quizId;
+    await User.findByPk(req.user.id).then((response) => {
+      console.log(response, "response");
+      response
+        .createResult({ quizId: id })
+        .then((r) => res.status(200).send(r));
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: error });
