@@ -95,6 +95,20 @@ exports.delete = async (req, res) => {
     });
 };
 
+exports.deleteAllUserResults = async (req, res) => {
+  // const id = req.params.resultId;
+  let userId = req?.user?.id;
+  await Result.destroy({
+    where: { userId },
+  })
+    .then(() => {
+      res.status(200).send("Results have been deleted!");
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+
 exports.create = async (req, res) => {
   let userId = req?.user?.id;
   let quizId = req?.body.quizId;

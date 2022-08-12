@@ -10,6 +10,8 @@ module.exports = function (app) {
 
   app.delete("/api/results/:feedId", middleware.verify, result.delete);
 
+  app.delete("/api/results/", middleware.verify, result.deleteAllUserResults);
+
   app.get("/api/results/my", middleware.verify, result.my);
 
   app.post("/api/results", middleware.verify, result.create);
