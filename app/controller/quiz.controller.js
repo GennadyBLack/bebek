@@ -3,6 +3,7 @@ const paginator = require("../helpers/paginationHelpers");
 const gueryHelper = require("../helpers/queryHelper");
 const Quiz = db.quiz;
 const User = db.user;
+const Result = db.result;
 
 // FETCH all boards
 exports.findAll = async (req, res) => {
@@ -114,11 +115,23 @@ exports.create = async (req, res) => {
 exports.createResult = async (req, res) => {
   try {
     const id = req.params.quizId;
-    await User.findByPk(req.user.id).then((response) => {
+    await User.findByPk(req.user.id).then(async (response) => {
       console.log(response, "response");
-      response
-        .createResult({ quizId: id })
-        .then((r) => res.status(200).send(r));
+      const quizResults = await Result.findAll({
+        where: {
+          quizId: id,
+          userId: req.user.id
+        }
+      })
+      console.log(quizResults, "quizResults")
+      //Todo аргумент для создания резалта при рестарте
+      if(!quizResults.length) {
+        response
+            .createResult({ quizId: id })
+            .then((r) => res.status(200).send(r));
+        return;
+      }
+      res.status(200).send(response)
     });
   } catch (error) {
     console.log(error);
