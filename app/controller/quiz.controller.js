@@ -4,6 +4,7 @@ const gueryHelper = require("../helpers/queryHelper");
 const Quiz = db.quiz;
 const User = db.user;
 const Result = db.result;
+const Question = db.question;
 
 // FETCH all boards
 exports.findAll = async (req, res) => {
@@ -52,17 +53,19 @@ exports.my = async (req, res) => {
 exports.findById = async (req, res) => {
   try {
     await Quiz.findByPk(req.params.quizId, {
-      include: { all: true, nested: true },
+      include: [{ all: true, nested: true, order: ["id", "ASC"] }],
+      order: [[{ model: Question }, "id", "asc"]],
     })
       .then((Quiz) => {
         res.status(200).send(Quiz);
       })
       .catch((err) => {
-        res.status(500).json({ error: err });
+        console.log(err);
+        res.status(400).send({ error: err });
       });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: err });
+    res.status(400).send({ error: err });
   }
 };
 
@@ -120,18 +123,18 @@ exports.createResult = async (req, res) => {
       const quizResults = await Result.findAll({
         where: {
           quizId: id,
-          userId: req.user.id
-        }
-      })
-      console.log(quizResults, "quizResults")
+          userId: req.user.id,
+        },
+      });
+      console.log(quizResults, "quizResults");
       //Todo аргумент для создания резалта при рестарте
-      if(!quizResults.length) {
+      if (!quizResults.length) {
         response
-            .createResult({ quizId: id })
-            .then((r) => res.status(200).send(r));
+          .createResult({ quizId: id })
+          .then((r) => res.status(200).send(r));
         return;
       }
-      res.status(200).send(response)
+      res.status(200).send(response);
     });
   } catch (error) {
     console.log(error);
