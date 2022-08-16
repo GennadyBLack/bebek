@@ -4,11 +4,11 @@ module.exports = function (app) {
 
   app.get("/api/results", result.findAll);
 
-  app.get("/api/results/:feedId", result.findById);
+  app.get("/api/results/:resultId", result.findById);
 
-  app.patch("/api/results/:feedId", middleware.verify, result.update);
+  app.patch("/api/results/:resultId", middleware.verify, result.update);
 
-  app.delete("/api/results/:feedId", middleware.verify, result.delete);
+  app.delete("/api/results/:resultId", middleware.verify, result.delete);
 
   app.delete("/api/results/", middleware.verify, result.deleteAllUserResults);
 

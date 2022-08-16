@@ -60,9 +60,9 @@ exports.findById = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  // const id = req.params.resultId;
-  const id = req.params.quizId;
+  const id = req.params.resultId;
   console.log(
+    req.params,
     req.body,
     "req.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.bodyreq.body.body"
   );
@@ -71,7 +71,7 @@ exports.update = async (req, res) => {
       { ...req.body },
       {
         where: {
-          id: id,
+          id,
         },
       }
     )
