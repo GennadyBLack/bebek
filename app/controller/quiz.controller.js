@@ -117,6 +117,7 @@ exports.create = async (req, res) => {
 
 exports.createResult = async (req, res) => {
   try {
+    console.log(req.body, "req-body");
     const id = req.params.quizId;
     await User.findByPk(req.user.id).then(async (response) => {
       console.log(response, "response");
@@ -128,7 +129,7 @@ exports.createResult = async (req, res) => {
       });
       console.log(quizResults, "quizResults");
       //Todo аргумент для создания резалта при рестарте
-      if (!quizResults.length) {
+      if (!quizResults.length || res.body.restart) {
         response
           .createResult({ quizId: id })
           .then((r) => res.status(200).send(r));
