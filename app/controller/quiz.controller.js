@@ -117,19 +117,23 @@ exports.create = async (req, res) => {
 
 exports.createResult = async (req, res) => {
   try {
-    console.log(req.body, "req-body");
+    // console.log(req.body, "req-body");
     const id = req.params.quizId;
+    const restart = req?.body?.restart
+
     await User.findByPk(req.user.id).then(async (response) => {
-      console.log(response, "response");
+      // console.log(response, "response");
       const quizResults = await Result.findAll({
         where: {
           quizId: id,
           userId: req.user.id,
         },
       });
-      console.log(quizResults, "quizResults");
+      // console.log(quizResults, "quizResults");
+
       //Todo аргумент для создания резалта при рестарте
-      if (!quizResults.length || res.body.restart) {
+      if (!quizResults.length || restart) {
+        console.log(req?.body?.restart, 'restart')
         response
           .createResult({ quizId: id })
           .then((r) => res.status(200).send(r));
