@@ -2,8 +2,12 @@ const jwt = require("jsonwebtoken");
 const tokenSecret = "my-token-secret";
 
 exports.verify = (req, res, next) => {
+  console.error(
+    req,
+    "REQ SUUUKAA====================================================================================================================="
+  );
   try {
-    const token = req.headers.authorization;
+    const token = req?.headers?.authorization;
     if (!token || token == "null" || token == null)
       res.status(400).json({ error: "please provide a token" });
     else {
