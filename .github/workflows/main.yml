@@ -6,7 +6,6 @@ jobs:
   gitPull:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Pull to Server
         uses: appleboy/scp-action@master
         with:
@@ -14,9 +13,8 @@ jobs:
           port: ${{ secrets.DEPLOY_SERVER_PORT }}
           username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
           key: ${{ secrets.DEPLOY_SERVER_KEY }}
-          script: 
+          script: |
             cd var/www/html/bebek
-            git checkout 
             git pull
             npm install
             npm run start
