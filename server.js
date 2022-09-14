@@ -6,7 +6,7 @@ const tokenSecret = "my-token-secret";
 const bcrypt = require("bcrypt");
 const rounds = 10;
 
-// i am here beacth sdd//
+// i am not HEEREEE SUUKA//
 global.appRoot = __dirname;
 
 const cors = require("cors");
