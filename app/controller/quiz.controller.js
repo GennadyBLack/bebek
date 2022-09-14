@@ -119,7 +119,7 @@ exports.createResult = async (req, res) => {
   try {
     // console.log(req.body, "req-body");
     const id = req.params.quizId;
-    const restart = req?.body?.restart
+    const restart = req?.body?.restart;
 
     await User.findByPk(req.user.id).then(async (response) => {
       // console.log(response, "response");
@@ -130,16 +130,20 @@ exports.createResult = async (req, res) => {
         },
       });
       // console.log(quizResults, "quizResults");
-
+      const unCompletedQuiz = quizResults?.length
+        ? quizResults.find((result) => !result.completed)
+        : null;
       //Todo аргумент для создания резалта при рестарте
-      if (!quizResults.length || restart) {
-        console.log(req?.body?.restart, 'restart')
-        response
-          .createResult({ quizId: id })
-          .then((r) => res.status(200).send(r));
+      if (!quizResults.length || restart || !unCompletedQuiz) {
+        console.log(req?.body?.restart, "restart");
+        console.log(response, "response");
+        response.createResult({ quizId: id }).then((r) => {
+          console.log(r, "r");
+          res.status(200).send(r);
+        });
         return;
       }
-      res.status(200).send(response);
+      res.status(200).send(unCompletedQuiz);
     });
   } catch (error) {
     console.log(error);
