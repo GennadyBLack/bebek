@@ -8,7 +8,11 @@ exports.upload = async (req, res) => {
     var img = req?.body?.uri;
     console.log(img, "THIS IS img");
     //обрезаем первую часть, где хранится расширение, оставляем только это расширение
-    var ext = img.split(";")[0].match(/jpeg|png|gif/)[0];
+    var ext = img?.split(";")[0];
+    if (!ext.match(/jpeg|png|gif|svg/)) {
+      res.status(500).json({ error: "Unsupported image format!" });
+    }
+    ext = ext?.match(/jpeg|png|gif|svg/)[0];
     //создаем баффер из второй части с инфой о картинке в base64
     var buf = Buffer.from(img.split(",")[1], "base64");
     //создаем путь до папки на сервере
