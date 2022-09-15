@@ -16,10 +16,11 @@ exports.upload = async (req, res) => {
     //создаем баффер из второй части с инфой о картинке в base64
     var buf = Buffer.from(img.split(",")[1], "base64");
     //создаем путь до папки на сервере
-    var dir = "../app/uploads";
-    console.log(fs.existsSync(dir), "dir exists");
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
+    var dir = "/app/uploads";
+    console.log(fs.existsSync(path.join(global.appRoot, dir)), "dir exists");
+    console.log(path.join(global.appRoot, dir), "dir");
+    if (!fs.existsSync(path.join(global.appRoot, dir))) {
+      fs.mkdirSync(path.join(global.appRoot, dir));
     }
     let filePath = `app/uploads/${Date.now()}.${ext}`; //
     console.log(filePath, "filePAth");
