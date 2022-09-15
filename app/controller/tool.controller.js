@@ -6,7 +6,6 @@ exports.upload = async (req, res) => {
   try {
     //берем uri из тела реквеста
     var img = req?.body?.uri;
-    console.log(img, "THIS IS img");
     //обрезаем первую часть, где хранится расширение, оставляем только это расширение
     var ext = img?.split(";")[0];
     if (!ext.match(/jpeg|png|gif|svg/)) {
@@ -22,12 +21,13 @@ exports.upload = async (req, res) => {
     if (!fs.existsSync(path.join(global.appRoot, dir))) {
       fs.mkdirSync(path.join(global.appRoot, dir));
     }
-    let filePath = `app/uploads/${Date.now()}.${ext}`; //
+    const fileName = `${Date.now()}.${ext}`;
+    let filePath = path.join(global.appRoot, `app/uploads/${fileName}`); //
     console.log(filePath, "filePAth");
-    const fileName = path.join(global.appRoot, filePath);
-    console.log(fileName, "fileName");
+    // const fileName = path.join(global.appRoot, filePath);
+    // console.log(fileName, "fileName");
     //записываем файл
-    fs.writeFileSync(fileName, buf);
+    fs.writeFileSync(filePath, buf);
     //по идее нужно feed переименовать в post, наверное, и создать отдельную таблицу feed (ну или оставить посты прикрепленными к юзеру как сейчас)
     res.status(200).send(`${fileName}`);
   } catch (error) {
