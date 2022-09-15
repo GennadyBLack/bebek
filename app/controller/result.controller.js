@@ -75,7 +75,10 @@ exports.update = async (req, res) => {
         },
       }
     )
-      .then(() => res.status(200).send("Успешно"))
+      .then(
+        async () =>
+          await Result.findByPk(id).then((r) => res.status(200).send(r))
+      )
       .catch((e) => res.status(400).json({ error: e }));
   } catch (e) {
     res.status(400).json({ error: e });

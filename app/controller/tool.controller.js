@@ -11,13 +11,20 @@ exports.upload = async (req, res) => {
     //создаем баффер из второй части с инфой о картинке в base64
     var buf = Buffer.from(img.split(",")[1], "base64");
     //создаем путь до папки на сервере
+    var dir = "../app/uploads";
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
     let filePath = `app/uploads/${Date.now()}.${ext}`; //
+    console.log(filePath, "filePAth");
     const fileName = path.join(global.appRoot, filePath);
+    console.log(fileName, "fileName");
     //записываем файл
     fs.writeFileSync(fileName, buf);
     //по идее нужно feed переименовать в post, наверное, и создать отдельную таблицу feed (ну или оставить посты прикрепленными к юзеру как сейчас)
     res.status(200).send(`${fileName}`);
   } catch (error) {
+    console.error(error, "error");
     res.status(500).json({ error: error });
   }
 };
