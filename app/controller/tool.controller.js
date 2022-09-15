@@ -23,7 +23,7 @@ exports.upload = async (req, res) => {
     }
     const fileName = `${Date.now()}.${ext}`;
     let filePath = path.join(global.appRoot, `app/uploads/${fileName}`); //
-    console.log(filePath, "filePAth");
+    // console.log(filePath, "filePAth");
     // const fileName = path.join(global.appRoot, filePath);
     // console.log(fileName, "fileName");
     //записываем файл
