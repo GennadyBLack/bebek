@@ -6,12 +6,14 @@ exports.upload = async (req, res) => {
   try {
     //берем uri из тела реквеста
     var img = req?.body?.uri;
+    console.log(img, "THIS IS img");
     //обрезаем первую часть, где хранится расширение, оставляем только это расширение
     var ext = img.split(";")[0].match(/jpeg|png|gif/)[0];
     //создаем баффер из второй части с инфой о картинке в base64
     var buf = Buffer.from(img.split(",")[1], "base64");
     //создаем путь до папки на сервере
     var dir = "../app/uploads";
+    console.log(fs.existsSync(dir), "dir exists");
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
