@@ -58,8 +58,8 @@ db.unreadMessage.belongsTo(db.user);
 db.user.hasMany(db.feed);
 db.feed.belongsTo(db.user);
 
-db.comment.hasMany(db.comment);
-db.comment.belongsTo(db.comment);
+// db.comment.hasMany(db.comment);
+// db.comment.belongsTo(db.comment);
 
 db.feed.hasMany(db.comment);
 db.comment.belongsTo(db.user);

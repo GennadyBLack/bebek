@@ -1,6 +1,7 @@
 const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
 const Feed = db.feed;
+const Comment = db.comment;
 
 // FETCH all boards
 exports.findAll = async (req, res) => {
@@ -100,4 +101,52 @@ exports.create = async (req, res) => {
     .catch((error) => {
       res.status(500).json({ error: error });
     });
+};
+
+exports.createComments = async (req, res) => {
+  try {
+    await Comment.create({
+      title: req.body.title,
+      userId: req.user.id,
+      feedId: req.params.feedId,
+    })
+      .then((response) => {
+        res.status(200).json(response);
+      })
+      .catch((e) => {
+        res.status(500).json({ error: e });
+      });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+exports.deleteComment = async (req, res) => {
+  const id = req.params.commentId;
+  await Comment.destroy({
+    where: { id: id },
+  })
+    .then(() => {
+      res.status(200).send("Comment has been deleted!");
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error });
+    });
+};
+
+exports.updateComment = async (req, res) => {
+  const id = req.params.commentId;
+
+  try {
+    await Comment.update(
+      { ...req.body.data },
+      {
+        where: {
+          id: id,
+        },
+      }
+    ).then(() => res.status(200).send("Успешно"));
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
 };

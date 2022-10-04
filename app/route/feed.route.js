@@ -13,4 +13,21 @@ module.exports = function (app) {
   app.get("/api/feeds/my", middleware.verify, feed.my);
 
   app.post("/api/feeds", middleware.verify, feed.create);
+
+  app.post(
+    "/api/feeds/comments/:feedId",
+    middleware.verify,
+    feed.createComments
+  );
+  app.delete(
+    "/api/feeds/comments/:commentId",
+    middleware.verify,
+    feed.deleteComment
+  );
+
+  app.patch(
+    "/api/feeds/comments/:commentId",
+    middleware.verify,
+    feed.updateComment
+  );
 };
