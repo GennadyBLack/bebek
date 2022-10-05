@@ -135,6 +135,10 @@ try {
       console.log(error);
     }
 
+    socket.on("ping", () => {
+      socket.emit("pong");
+    });
+
     socket.join(`notify:${socket.userID}`); // подключаем пользователя к своей комнате.
     console.error(`USER CONNECTED ${socket.userID}`);
 
