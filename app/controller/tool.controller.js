@@ -6,9 +6,10 @@ exports.upload = async (req, res) => {
   try {
     //берем uri из тела реквеста
     var img = req?.body?.uri;
-    console.log(img, "IMG");
+
     //обрезаем первую часть, где хранится расширение, оставляем только это расширение
     var ext = img?.split(";")[0];
+    console.log(ext, "ext");
     if (!ext.match(/jpeg|png|gif|svg/)) {
       res.status(500).json({ error: "Unsupported image format!" });
     }
