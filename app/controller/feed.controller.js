@@ -1,27 +1,28 @@
 const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
 const Feed = db.feed;
+const gueryHelper = require("../helpers/queryHelper");
 const Comment = db.comment;
 
 // FETCH all boards
 exports.findAll = async (req, res) => {
-  const { page } = req.query;
-  const { limit, offset } = paginator.getPagination(page);
+  // const { page } = req.query;
+  // const { limit, offset } = paginator.getPagination(page);
 
-  const condition = {
-    // where: { chatId: req.params.chatId },
-    // order: [["id", "DESC"]],
-    // include: "user",
-  };
-
-  await Feed.findAndCountAll({ limit, offset, ...condition })
-    .then((feed) => {
-      const response = paginator.getPagingData(feed, page, limit);
-      res.send(response);
-    })
-    .catch((error) => {
-      res.status(500).json({ error: error });
-    });
+  // const condition = {
+  //   // where: { chatId: req.params.chatId },
+  //   // order: [["id", "DESC"]],
+  //   // include: "user",
+  // };
+  await gueryHelper(Feed, req, res);
+  // await Feed.findAndCountAll({ limit, offset, ...condition })
+  //   .then((feed) => {
+  //     const response = paginator.getPagingData(feed, page, limit);
+  //     res.send(response);
+  //   })
+  //   .catch((error) => {
+  //     res.status(500).json({ error: error });
+  //   });
 };
 
 exports.my = async (req, res) => {

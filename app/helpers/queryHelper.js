@@ -21,15 +21,18 @@ const queryHelper = async (model, req, res) => {
     limitQuery = search.getLimitQuery(),
     offsetQuery = search.getOffsetQuery();
   // return res.send(orderQuery);
+  const data = await model.findAndCountAll({
+    include: [{ all: true, nested: true }],
+    where: whereQuery,
+    order: orderQuery,
+    limit: limitQuery,
+    offset: offsetQuery,
+    logging: console.log,
+  });
+
   return res.send({
-    data: await model.findAll({
-      include: [{ all: true, nested: true }],
-      where: whereQuery,
-      order: orderQuery,
-      limit: limitQuery,
-      offset: offsetQuery,
-      logging: console.log,
-    }),
+    data: data.rows,
+    meta: [data.count],
   });
 };
 module.exports = queryHelper;
