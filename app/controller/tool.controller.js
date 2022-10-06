@@ -10,10 +10,11 @@ exports.upload = async (req, res) => {
     //обрезаем первую часть, где хранится расширение, оставляем только это расширение
     var ext = img?.split(";")[0];
     console.log(ext, "ext");
-    if (!ext.match(/jpeg|png|gif|svg/)) {
+    if (!ext.match(/jpg|jpeg|png|gif|svg/)) {
       res.status(500).json({ error: "Unsupported image format!" });
     }
-    ext = ext?.match(/jpeg|png|gif|svg/)[0];
+    console.log(ext?.match(/jpg|jpeg|png|gif|svg/), "MATCH");
+    ext = ext?.match(/jpg|jpeg|png|gif|svg/)[0];
     //создаем баффер из второй части с инфой о картинке в base64
     var buf = Buffer.from(img.split(",")[1], "base64");
     //создаем путь до папки на сервере
