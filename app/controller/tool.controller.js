@@ -30,6 +30,7 @@ exports.upload = async (req, res) => {
     // const fileName = path.join(global.appRoot, filePath);
     console.log(fileName, "fileName");
     //записываем файл
+    console.log(buf, "BUFFER");
     fs.writeFileSync(filePath, buf);
     //по идее нужно feed переименовать в post, наверное, и создать отдельную таблицу feed (ну или оставить посты прикрепленными к юзеру как сейчас)
     res.status(200).send(`${fileName}`);
