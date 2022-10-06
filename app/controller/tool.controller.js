@@ -17,16 +17,16 @@ exports.upload = async (req, res) => {
     var buf = Buffer.from(img.split(",")[1], "base64");
     //создаем путь до папки на сервере
     var dir = "/app/uploads";
-    console.log(fs.existsSync(path.join(global.appRoot, dir)), "dir exists");
-    console.log(path.join(global.appRoot, dir), "dir");
+    // console.log(fs.existsSync(path.join(global.appRoot, dir)), "dir exists");
+    // console.log(path.join(global.appRoot, dir), "dir");
     if (!fs.existsSync(path.join(global.appRoot, dir))) {
       fs.mkdirSync(path.join(global.appRoot, dir));
     }
     const fileName = `${Date.now()}.${ext}`;
     let filePath = path.join(global.appRoot, `app/uploads/${fileName}`); //
-    console.log(filePath, "filePAth");
+    // console.log(filePath, "filePAth");
     // const fileName = path.join(global.appRoot, filePath);
-    console.log(fileName, "fileName");
+    // console.log(fileName, "fileName");
     //записываем файл
     fs.writeFileSync(filePath, buf);
     //по идее нужно feed переименовать в post, наверное, и создать отдельную таблицу feed (ну или оставить посты прикрепленными к юзеру как сейчас)
