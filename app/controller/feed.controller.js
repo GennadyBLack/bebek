@@ -2,6 +2,7 @@ const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
 const Feed = db.feed;
 const gueryHelper = require("../helpers/queryHelper");
+const fs = require("fs");
 const Comment = db.comment;
 
 // FETCH all boards
@@ -61,6 +62,9 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const id = req.params.feedId;
+  const feed = await Feed.findById(id);
+  console.log(feed, "FEED");
+  // fs.unlink();
   await Feed.destroy({
     where: { id: id },
   })
