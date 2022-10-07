@@ -2,6 +2,8 @@ const db = require("../config/db.config.js");
 const paginator = require("../helpers/paginationHelpers");
 const Feed = db.feed;
 const gueryHelper = require("../helpers/queryHelper");
+const fs = require("fs");
+const path = require("path");
 const Comment = db.comment;
 
 // FETCH all boards
@@ -61,6 +63,11 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const id = req.params.feedId;
+  const feed = await Feed.findByPk(id);
+  let filePath = path.join(global.appRoot, `app/uploads/${feed?.path}`);
+  fs.unlink(filePath, (err) => {
+    console.error(err);
+  });
   await Feed.destroy({
     where: { id: id },
   })
