@@ -143,6 +143,7 @@ exports.getCommentsByFeedId = async (req, res) => {
     where: {
       feedId: req.params.feedId,
     },
+    include: ["user"],
     // order: [["id", "DESC"]],
     // include: "user",
   };
