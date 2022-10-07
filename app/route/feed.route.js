@@ -30,4 +30,7 @@ module.exports = function (app) {
     middleware.verify,
     feed.updateComment
   );
+  app.get("/api/feeds/comments/:feedId", feed.getCommentsByFeedId);
+
+  app.get("/api/feeds/comments", feed.getComments);
 };

@@ -6,23 +6,7 @@ const Comment = db.comment;
 
 // FETCH all boards
 exports.findAll = async (req, res) => {
-  // const { page } = req.query;
-  // const { limit, offset } = paginator.getPagination(page);
-
-  // const condition = {
-  //   // where: { chatId: req.params.chatId },
-  //   // order: [["id", "DESC"]],
-  //   // include: "user",
-  // };
   await gueryHelper(Feed, req, res);
-  // await Feed.findAndCountAll({ limit, offset, ...condition })
-  //   .then((feed) => {
-  //     const response = paginator.getPagingData(feed, page, limit);
-  //     res.send(response);
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error: error });
-  //   });
 };
 
 exports.my = async (req, res) => {
@@ -61,10 +45,9 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
   const id = req.params.feedId;
-
   try {
     await Feed.update(
-      { ...req.body.data },
+      { ...req?.body?.data },
       {
         where: {
           id: id,
@@ -150,4 +133,30 @@ exports.updateComment = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error });
   }
+};
+
+exports.getCommentsByFeedId = async (req, res) => {
+  const { page } = req.query;
+  const { limit, offset } = paginator.getPagination(page);
+
+  const condition = {
+    where: {
+      feedId: req.params.feedId,
+    },
+    // order: [["id", "DESC"]],
+    // include: "user",
+  };
+
+  await Comment.findAndCountAll({ limit, offset, ...condition })
+    .then((feed) => {
+      const response = paginator.getPagingData(feed, page, limit);
+      res.send(response);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error });
+    });
+};
+
+exports.getComments = async (req, res) => {
+  await gueryHelper(Comment, req, res);
 };
