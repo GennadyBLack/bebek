@@ -62,7 +62,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const id = req.params.feedId;
-  const feed = await Feed.findById(id);
+  const feed = await Feed.findByPk(id);
   console.log(feed, "FEED");
   // fs.unlink();
   await Feed.destroy({
