@@ -3,7 +3,8 @@ const Chat = db.chat;
 
 // FETCH all boards
 exports.findAll = (req, res) => {
-  Chat.findAll()
+  //where: { userId: req?.user?.id
+  Chat.findAll({})
     .then((chats) => {
       res.send(chats);
     })

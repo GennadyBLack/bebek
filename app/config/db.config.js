@@ -46,35 +46,35 @@ db.chat.belongsToMany(db.user, { through: "userChats" });
 db.chat.hasMany(db.message, { onDelete: "CASCADE" });
 db.message.belongsTo(db.chat);
 
-db.user.hasMany(db.message);
+db.user.hasMany(db.message, { onDelete: "CASCADE" });
 db.message.belongsTo(db.user);
 
 db.chat.hasMany(db.unreadMessage, { onDelete: "CASCADE" });
 db.unreadMessage.belongsTo(db.chat);
 
-db.user.hasMany(db.unreadMessage);
+db.user.hasMany(db.unreadMessage, { onDelete: "CASCADE" });
 db.unreadMessage.belongsTo(db.user);
 
-db.user.hasMany(db.feed);
+db.user.hasMany(db.feed, { onDelete: "CASCADE" });
 db.feed.belongsTo(db.user);
 
 // db.comment.hasMany(db.comment);
 // db.comment.belongsTo(db.comment);
 
-db.feed.hasMany(db.comment);
+db.feed.hasMany(db.comment, { onDelete: "CASCADE" });
 db.comment.belongsTo(db.user);
 
 //quiz
-db.quiz.hasMany(db.question);
+db.quiz.hasMany(db.question, { onDelete: "CASCADE" });
 db.question.belongsTo(db.quiz);
 
-db.question.hasMany(db.answer);
+db.question.hasMany(db.answer, { onDelete: "CASCADE" });
 db.answer.belongsTo(db.question);
 
-db.quiz.hasMany(db.result);
+db.quiz.hasMany(db.result, { onDelete: "CASCADE" });
 db.result.belongsTo(db.quiz);
 
-db.user.hasMany(db.result);
+db.user.hasMany(db.result, { onDelete: "CASCADE" });
 db.result.belongsTo(db.user);
 
 //quiz end

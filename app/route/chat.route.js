@@ -4,13 +4,13 @@ module.exports = function (app) {
   const chats = require("../controller/chat.controller.js");
 
   // Retrieve all Boards
-  app.get("/api/chats", chats.findAll);
+  app.get("/api/chats", middleware.verify, chats.findAll);
 
   // Retrieve a single Board by Id
-  app.get("/api/chats/:chatId", chats.findById);
+  app.get("/api/chats/:chatId", middleware.verify, chats.findById);
 
   // Update a Chat with Id
-  app.patch("/api/chats/:chatId", chats.update);
+  app.patch("/api/chats/:chatId", middleware.verify, chats.update);
 
   // Delete a Customer with Id
   app.delete("/api/chats/:chatId", chats.delete);
