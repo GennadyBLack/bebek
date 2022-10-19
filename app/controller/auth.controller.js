@@ -8,7 +8,7 @@ const User = db.user;
 // login
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, visits } = req.body;
     await User.findOne({ where: { email: email } })
       .then((user) => {
         if (!user)
@@ -16,9 +16,14 @@ exports.login = async (req, res) => {
         else {
           bcrypt.compare(password, user.password, (errors, match) => {
             if (errors) res.status(500).json({ error: errors });
-            else if (match)
+            else if (match) {
+              console.log(user.visits);
+              if (user.visits.length == 5) {
+                user.visits.shift();
+              }
+              user.visits.push(visits);
               res.status(200).json({ token: generateToken(user), user: user });
-            else res.status(403).json({ error: "passwords do not match" });
+            } else res.status(403).json({ error: "passwords do not match" });
           });
         }
       })
@@ -64,6 +69,8 @@ function generateToken(user) {
 //me
 exports.me = async (req, res) => {
   try {
+    console.log(req.user.id, "req.user.id");
+    console.log(req.user, "req.user.id");
     await User.findOne({
       where: { id: req.user.id },
     })

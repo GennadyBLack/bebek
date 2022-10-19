@@ -71,7 +71,7 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
   const id = req.params.quizId;
-  console.log(req.params, req.body, "REQ");
+  // console.log(req.params, req.body, "REQ");
   try {
     await Quiz.update(
       { ...req.body },
@@ -88,7 +88,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const id = req.params.quizId;
-  console.log(req.params);
+  // console.log(req.params);
   await Quiz.destroy({
     where: { id },
   })
@@ -135,10 +135,10 @@ exports.createResult = async (req, res) => {
         : null;
       //Todo аргумент для создания резалта при рестарте
       if (!quizResults.length || restart || !unCompletedQuiz) {
-        console.log(req?.body?.restart, "restart");
-        console.log(response, "response");
+        // console.log(req?.body?.restart, "restart");
+        // console.log(response, "response");
         response.createResult({ quizId: id }).then((r) => {
-          console.log(r, "r");
+          // console.log(r, "r");
           res.status(200).send(r);
         });
         return;

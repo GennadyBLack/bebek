@@ -9,11 +9,11 @@ exports.upload = async (req, res) => {
 
     //обрезаем первую часть, где хранится расширение, оставляем только это расширение
     var ext = img?.split(";")[0];
-    console.log(ext, "ext");
+    // console.log(ext, "ext");
     if (!ext.match(/jpg|jpeg|png|gif|svg/)) {
       res.status(500).json({ error: "Unsupported image format!" });
     }
-    console.log(ext?.match(/jpg|jpeg|png|gif|svg/), "MATCH");
+    // console.log(ext?.match(/jpg|jpeg|png|gif|svg/), "MATCH");
     ext = ext?.match(/jpg|jpeg|png|gif|svg/)[0];
     //создаем баффер из второй части с инфой о картинке в base64
     var buf = Buffer.from(img.split(",")[1], "base64");
@@ -28,9 +28,9 @@ exports.upload = async (req, res) => {
     let filePath = path.join(global.appRoot, `app/uploads/${fileName}`); //
     // console.log(filePath, "filePAth");
     // const fileName = path.join(global.appRoot, filePath);
-    console.log(fileName, "fileName");
+    // console.log(fileName, "fileName");
     //записываем файл
-    console.log(buf, "BUFFER");
+    // console.log(buf, "BUFFER");
     fs.writeFileSync(filePath, buf);
     //по идее нужно feed переименовать в post, наверное, и создать отдельную таблицу feed (ну или оставить посты прикрепленными к юзеру как сейчас)
     res.status(200).send(`${fileName}`);

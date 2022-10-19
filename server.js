@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require("./app/config/db.config.js");
 const User = db.user;
 
-const force = false;
+const force = true;
 
 // const force = true;
 
