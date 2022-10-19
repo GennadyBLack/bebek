@@ -3,6 +3,7 @@ const rounds = 10;
 const jwt = require("jsonwebtoken");
 const tokenSecret = "my-token-secret";
 const db = require("../config/db.config.js");
+const sequelize = require("sequelize");
 const User = db.user;
 
 // login
@@ -14,14 +15,24 @@ exports.login = async (req, res) => {
         if (!user)
           res.status(404).json({ errors: "no user with that email found" });
         else {
-          bcrypt.compare(password, user.password, (errors, match) => {
+          bcrypt.compare(password, user.password, async (errors, match) => {
             if (errors) res.status(500).json({ error: errors });
             else if (match) {
-              console.log(user.visits);
-              if (user.visits.length == 5) {
-                user.visits.shift();
+              // const userVisits = JSON.parse(JSON.stringify(user.visits));
+              // console.log(userVisits, "userVISITS");
+              if (user.visits.length >= 5) {
+                await user.visits.shift();
               }
-              user.visits.push(visits);
+              await user.update(
+                {
+                  visits: sequelize.fn(
+                    "array_append",
+                    sequelize.col("visits"),
+                    JSON.stringify(visits)
+                  ),
+                },
+                { where: { email: email } }
+              );
               res.status(200).json({ token: generateToken(user), user: user });
             } else res.status(403).json({ error: "passwords do not match" });
           });
@@ -69,8 +80,8 @@ function generateToken(user) {
 //me
 exports.me = async (req, res) => {
   try {
-    console.log(req.user.id, "req.user.id");
-    console.log(req.user, "req.user.id");
+    // console.log(req.user.id, "req.user.id");
+    // console.log(req.user, "req.user.id");
     await User.findOne({
       where: { id: req.user.id },
     })

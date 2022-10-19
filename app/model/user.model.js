@@ -56,7 +56,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     visits: {
       type: Sequelize.ARRAY(Sequelize.STRING),
-      defaultValue: ["{}"],
+      defaultValue: [],
     },
   });
 

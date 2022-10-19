@@ -3,7 +3,7 @@ const tokenSecret = "my-token-secret";
 
 exports.verify = (req, res, next) => {
   console.error(
-    req,
+    // req,
     "REQ SUUUKAA====================================================================================================================="
   );
   try {
