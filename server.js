@@ -70,7 +70,7 @@ function initial() {
             console.log("user has avtomatic created");
           })
           .catch((error) => {
-            comsole.log(error, "FROM INITIAL FUNCTION IN SERVER");
+            console.log(error, "FROM INITIAL FUNCTION IN SERVER");
           });
       }
     });

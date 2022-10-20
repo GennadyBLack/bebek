@@ -38,6 +38,7 @@ db.quiz = require("../model/quiz/quiz.model.js")(sequelize, Sequelize);
 db.answer = require("../model/quiz/answer.model.js")(sequelize, Sequelize);
 db.question = require("../model/quiz/question.model.js")(sequelize, Sequelize);
 db.result = require("../model/quiz/result.model.js")(sequelize, Sequelize);
+db.visit = require("../model/visit.model.js")(sequelize, Sequelize);
 
 //?RELATONSHIPS
 db.user.belongsToMany(db.chat, { through: "userChats" });
@@ -57,6 +58,9 @@ db.unreadMessage.belongsTo(db.user);
 
 db.user.hasMany(db.feed, { onDelete: "CASCADE" });
 db.feed.belongsTo(db.user);
+
+db.user.hasMany(db.visit, { onDelete: "CASCADE" });
+db.visit.belongsTo(db.visit);
 
 // db.comment.hasMany(db.comment);
 // db.comment.belongsTo(db.comment);

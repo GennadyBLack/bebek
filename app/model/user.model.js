@@ -54,10 +54,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.ARRAY(Sequelize.STRING),
       defaultValue: ["Profile", "Feed", "Quiz"],
     },
-    visits: {
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      defaultValue: [],
-    },
   });
 
   return User;
