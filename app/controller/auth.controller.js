@@ -19,6 +19,13 @@ exports.login = async (req, res) => {
           bcrypt.compare(password, user.password, async (errors, match) => {
             if (errors) res.status(500).json({ error: errors });
             else if (match) {
+              console.log(user.visits, "visits");
+              if (user.visits.length >= 5) {
+                const firstVisitId = user.visits[0].id;
+                await Visit.destroy({
+                  where: { id: firstVisitId },
+                });
+              }
               await Visit.create({
                 ...visits,
                 userId: user.id,
