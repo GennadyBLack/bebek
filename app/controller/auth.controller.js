@@ -81,7 +81,7 @@ exports.me = async (req, res) => {
     // console.log(req.user, "req.user.id");
     await User.findOne({
       where: { id: req.user.id },
-      include: Visit,
+      // include: Visit,
     })
       .then((user) => {
         if (user) {
