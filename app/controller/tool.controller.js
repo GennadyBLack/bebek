@@ -4,34 +4,39 @@ const db = require("../config/db.config");
 
 exports.upload = async (req, res) => {
   try {
-    //берем uri из тела реквеста
-    var img = req?.body?.uri;
+    // var img = Object.keys(req?.body);
+    //   'fileName',  'type',
+    // 'base64',    'uri',
+    // 'assetId',   'width',
+    // 'height',    'fileSize',
+    // 'cancelled'
+
+    const uploadFromMobile = req?.body?.type;
+    var ext = uploadFromMobile
+      ? req.body.uri.split(".")[req.body.uri.split(".").length - 1]
+      : req?.body.uri?.split(";")[0].match(/jpg|jpeg|png|gif|svg/)[0];
+
+    let base = req?.body?.base64;
 
     //обрезаем первую часть, где хранится расширение, оставляем только это расширение
-    var ext = img?.split(";")[0];
-    // console.log(ext, "ext");
+
     if (!ext.match(/jpg|jpeg|png|gif|svg/)) {
       res.status(500).json({ error: "Unsupported image format!" });
     }
-    // console.log(ext?.match(/jpg|jpeg|png|gif|svg/), "MATCH");
-    ext = ext?.match(/jpg|jpeg|png|gif|svg/)[0];
+
     //создаем баффер из второй части с инфой о картинке в base64
-    var buf = Buffer.from(img.split(",")[1], "base64");
+    var buf = Buffer.from(base, "base64");
     //создаем путь до папки на сервере
     var dir = "/app/uploads";
-    // console.log(fs.existsSync(path.join(global.appRoot, dir)), "dir exists");
-    // console.log(path.join(global.appRoot, dir), "dir");
     if (!fs.existsSync(path.join(global.appRoot, dir))) {
       fs.mkdirSync(path.join(global.appRoot, dir));
     }
     const fileName = `${Date.now()}.${ext}`;
     let filePath = path.join(global.appRoot, `app/uploads/${fileName}`); //
     // console.log(filePath, "filePAth");
-    // const fileName = path.join(global.appRoot, filePath);
-    // console.log(fileName, "fileName");
-    //записываем файл
-    // console.log(buf, "BUFFER");
+
     fs.writeFileSync(filePath, buf);
+    console.log(fileName, "fileName");
     //по идее нужно feed переименовать в post, наверное, и создать отдельную таблицу feed (ну или оставить посты прикрепленными к юзеру как сейчас)
     res.status(200).send(`${fileName}`);
   } catch (error) {

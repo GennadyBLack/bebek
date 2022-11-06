@@ -6,7 +6,6 @@ const tokenSecret = "my-token-secret";
 const bcrypt = require("bcrypt");
 const rounds = 10;
 
-// i am not HEEREEE SUUKA//
 global.appRoot = __dirname;
 
 const cors = require("cors");
@@ -21,7 +20,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 

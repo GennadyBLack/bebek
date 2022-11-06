@@ -3,8 +3,8 @@ const tokenSecret = "my-token-secret";
 
 exports.verify = (req, res, next) => {
   console.error(
-    // req,
-    "REQ SUUUKAA====================================================================================================================="
+    req?.body,
+    "REQ BODY====================================================================================================================="
   );
   try {
     const token = req?.headers?.authorization;
