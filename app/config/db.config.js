@@ -32,6 +32,15 @@ db.unreadMessage = require("../model/unreadMessage.model.js")(
   Sequelize
 );
 
+db.usersFriends = require("../model/usersFriends.model.js")(
+  sequelize,
+  Sequelize
+);
+
+db.friendRequest = require("../model/frieandsRequest.model.js")(
+  sequelize,
+  Sequelize
+);
 db.feed = require("../model/feed.model.js")(sequelize, Sequelize);
 db.comment = require("../model/comment.model.js")(sequelize, Sequelize);
 db.quiz = require("../model/quiz/quiz.model.js")(sequelize, Sequelize);
@@ -81,6 +90,18 @@ db.result.belongsTo(db.quiz);
 db.user.hasMany(db.result, { onDelete: "CASCADE" });
 db.result.belongsTo(db.user);
 
-//quiz end
+db.user.hasMany(db.friendRequest, { onDelete: "CASCADE" });
+db.friendRequest.belongsTo(db.user);
+
+db.user.belongsToMany(db.user, {
+  as: "friends",
+  foreignKey: "user_id",
+  through: db.usersFriends,
+});
+db.user.belongsToMany(db.user, {
+  as: "userFriends",
+  foreignKey: "friend_id",
+  through: db.usersFriends,
+});
 
 module.exports = db;

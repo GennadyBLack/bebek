@@ -6,6 +6,7 @@ const db = require("../config/db.config.js");
 const sequelize = require("sequelize");
 const User = db.user;
 const Visit = db.visit;
+const FriendsRequest = db.friendRequest;
 
 // login
 exports.login = async (req, res) => {
@@ -109,5 +110,50 @@ exports.updateMe = async (req, res) => {
     ).then(() => res.status(200).send("Успешно"));
   } catch (error) {
     res.status(500).json({ error: error });
+  }
+};
+
+exports.getFriends = async (req, res) => {
+  await gueryHelper(User, req, res);
+};
+
+exports.getFriendsRequest = async (req, res) => {
+  await gueryHelper(FriendsRequest, req, res);
+};
+
+exports.createFriends = async (req, res) => {
+  let userId = req?.user?.id;
+
+  await FriendsRequest.create({
+    ...req?.body,
+    personId: userId,
+  })
+    .then((r) => {
+      res.status(200).send(r);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+
+exports.updateFriendRequest = async (req, res) => {
+  try {
+    const resp = req.body.status;
+    const id = req.params.id;
+    const FriendRequest = await FriendsRequest.findByPk(id, {})
+      .then((Reqs) => {
+        if (resp === "confirm") {
+          User.findByPk(Reqs.meId, {}).then((user) => {
+            user.createFriends({ friendId: Reqs.requestUserId });
+          });
+        }
+
+        // res.send(Reqs);
+      })
+      .catch((err) => {
+        res.status(500).send("Error -> " + err);
+      });
+  } catch (error) {
+    res.status(500).send("Error -> " + error);
   }
 };

@@ -8,24 +8,7 @@ const Question = db.question;
 
 // FETCH all boards
 exports.findAll = async (req, res) => {
-  const { page } = req.query;
-  const { limit, offset } = paginator.getPagination(page);
-
-  const condition = {
-    include: { all: true, nested: true },
-    // where: { chatId: req.params.chatId },
-    // order: [["id", "DESC"]],
-    // include: "user",
-  };
   await gueryHelper(Quiz, req, res);
-  // await Quiz.findAndCountAll({ limit, offset, ...condition })
-  //   .then((quiz) => {
-  //     const response = paginator.getPagingData(quiz, page, limit);
-  //     res.send(response);
-  //   })
-  //   .catch((err) => {
-  //     res.status(500).json({ error: err });
-  //   });
 };
 
 exports.my = async (req, res) => {

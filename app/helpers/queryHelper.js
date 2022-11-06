@@ -21,6 +21,7 @@ const queryHelper = async (model, req, res) => {
     limitQuery = search.getLimitQuery(),
     offsetQuery = search.getOffsetQuery();
   // return res.send(orderQuery);
+  //TODO:доделать чтобы можно было указывать екстенды иначе слишком много данных тянется
   const data = await model.findAndCountAll({
     include: [{ all: true, nested: true }],
     where: whereQuery,
