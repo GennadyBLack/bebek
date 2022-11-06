@@ -48,6 +48,7 @@ db.answer = require("../model/quiz/answer.model.js")(sequelize, Sequelize);
 db.question = require("../model/quiz/question.model.js")(sequelize, Sequelize);
 db.result = require("../model/quiz/result.model.js")(sequelize, Sequelize);
 db.visit = require("../model/visit.model.js")(sequelize, Sequelize);
+db.userPage = require("../model/userPage.model.js")(sequelize, Sequelize);
 
 //?RELATONSHIPS
 db.user.belongsToMany(db.chat, { through: "userChats" });
@@ -98,9 +99,22 @@ db.user.belongsToMany(db.user, {
   foreignKey: "user_id",
   through: db.usersFriends,
 });
+
 db.user.belongsToMany(db.user, {
   as: "userFriends",
   foreignKey: "friend_id",
+  through: db.usersFriends,
+});
+
+db.user.belongsToMany(db.userPage, {
+  as: "pagePosts",
+  foreignKey: "user_id",
+  through: db.usersFriends,
+});
+
+db.userPage.belongsToMany(db.user, {
+  as: "pagePosts",
+  foreignKey: "page_id",
   through: db.usersFriends,
 });
 
