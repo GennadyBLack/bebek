@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const rounds = 10;
+const gueryHelper = require("../helpers/queryHelper");
 const jwt = require("jsonwebtoken");
 const tokenSecret = "my-token-secret";
 const db = require("../config/db.config.js");
@@ -7,6 +8,7 @@ const sequelize = require("sequelize");
 const User = db.user;
 const Visit = db.visit;
 const FriendsRequest = db.friendRequest;
+const usersFriends = db.usersFriends;
 
 // login
 exports.login = async (req, res) => {
@@ -78,20 +80,14 @@ function generateToken(user) {
 //me
 exports.me = async (req, res) => {
   try {
-    // console.log(req.user.id, "req.user.id");
-    // console.log(req.user, "req.user.id");
     await User.findOne({
       where: { id: req.user.id },
-      // include: Visit,
-    })
-      .then((user) => {
-        if (user) {
-          res.status(200).json({ data: { user: user } });
-        }
-      })
-      .catch((error) => {
-        res.status(500).json({ error: error });
-      });
+      include: ["friends", "myFriendsRequest", "friendsRequest"],
+    }).then((user) => {
+      if (user) {
+        res.status(200).json({ data: { user: user } });
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -121,19 +117,37 @@ exports.getFriendsRequest = async (req, res) => {
   await gueryHelper(FriendsRequest, req, res);
 };
 
-exports.createFriends = async (req, res) => {
-  let userId = req?.user?.id;
-
-  await FriendsRequest.create({
-    ...req?.body,
-    personId: userId,
-  })
-    .then((r) => {
-      res.status(200).send(r);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
+exports.createFriendsRequest = async (req, res) => {
+  try {
+    let userId = req?.user?.id;
+    await FriendsRequest.create({
+      friend_id: userId,
+      user_id: req.body.user_id,
     });
+
+    res.status(200).send("Успешно friend запрос");
+  } catch (error) {
+    res.status(500).send("Error -> " + error);
+  }
+};
+
+exports.createFriends = async (req, res) => {
+  try {
+    let userId = req?.user?.id;
+    await usersFriends.create({
+      friend_id: userId,
+      user_id: req.body.user_id,
+    });
+
+    await usersFriends.create({
+      friend_id: req.body.user_id,
+      user_id: userId,
+    });
+
+    res.status(200).send("Успешно friend");
+  } catch (error) {
+    res.status(500).send("Error -> " + error);
+  }
 };
 
 exports.updateFriendRequest = async (req, res) => {

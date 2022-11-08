@@ -54,6 +54,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.ARRAY(Sequelize.STRING),
       defaultValue: ["Profile", "Feed", "Quiz"],
     },
+    birth_day: Sequelize.DATE,
     avatarBackground: Sequelize.STRING,
     title: Sequelize.STRING,
     city: Sequelize.STRING,

@@ -9,12 +9,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.ENUM("pending", "confirm", "rejected"),
       defaultValue: "pending",
     },
-    requestUserId: {
-      type: Sequelize.INTEGER,
-    },
-    meId: {
-      type: Sequelize.INTEGER,
-    },
+    user_id: Sequelize.BIGINT,
+    friend_id: Sequelize.BIGINT,
   });
 
   return FriendRequest;

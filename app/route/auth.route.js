@@ -9,11 +9,19 @@ module.exports = function (app) {
   app.patch("/api/auth/me", middleware.verify, auth.updateMe);
   //Friendssssss
   app.get("/api/auth/me/friends", middleware.verify, auth.getFriends);
+
   app.get(
     "/api/auth/me/friends_requests",
     middleware.verify,
     auth.getFriendsRequest
   );
+
+  app.post(
+    "/api/auth/me/friends_requests",
+    middleware.verify,
+    auth.createFriendsRequest
+  );
+
   app.post("/api/auth/me/friends", middleware.verify, auth.createFriends);
 
   app.patch(

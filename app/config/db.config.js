@@ -22,7 +22,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-//Models/tables
 //Добавляем таблицу в бд, импортируя модель
 db.user = require("../model/user.model.js")(sequelize, Sequelize);
 db.chat = require("../model/chat.model.js")(sequelize, Sequelize);
@@ -37,7 +36,7 @@ db.usersFriends = require("../model/usersFriends.model.js")(
   Sequelize
 );
 
-db.friendRequest = require("../model/frieandsRequest.model.js")(
+db.friendRequest = require("../model/friendsRequest.model.js")(
   sequelize,
   Sequelize
 );
@@ -72,9 +71,6 @@ db.feed.belongsTo(db.user);
 db.user.hasMany(db.visit, { onDelete: "CASCADE" });
 db.visit.belongsTo(db.visit);
 
-// db.comment.hasMany(db.comment);
-// db.comment.belongsTo(db.comment);
-
 db.feed.hasMany(db.comment, { onDelete: "CASCADE" });
 db.comment.belongsTo(db.user);
 
@@ -91,24 +87,24 @@ db.result.belongsTo(db.quiz);
 db.user.hasMany(db.result, { onDelete: "CASCADE" });
 db.result.belongsTo(db.user);
 
-db.user.hasMany(db.friendRequest, { onDelete: "CASCADE" });
-db.friendRequest.belongsTo(db.user);
-
 db.user.belongsToMany(db.user, {
   as: "friends",
   foreignKey: "user_id",
+  otherKey: "friend_id",
   through: db.usersFriends,
 });
 
 db.user.belongsToMany(db.user, {
   as: "userFriends",
   foreignKey: "friend_id",
+  otherKey: "user_id",
   through: db.usersFriends,
 });
 
 db.user.belongsToMany(db.userPage, {
   as: "pagePosts",
   foreignKey: "user_id",
+
   through: db.usersFriends,
 });
 
@@ -116,6 +112,20 @@ db.userPage.belongsToMany(db.user, {
   as: "pagePosts",
   foreignKey: "page_id",
   through: db.usersFriends,
+});
+
+db.user.belongsToMany(db.user, {
+  as: "friendsRequest",
+  foreignKey: "user_id",
+  otherKey: "friend_id",
+  through: db.friendRequest,
+});
+
+db.user.belongsToMany(db.user, {
+  as: "myFriendsRequest",
+  foreignKey: "friend_id",
+  otherKey: "user_id",
+  through: db.friendRequest,
 });
 
 module.exports = db;

@@ -15,6 +15,7 @@ const config = {
     credentials: false,
   },
 };
+
 const corsOptions = {
   origin: "http://localhost:19006",
   optionsSuccessStatus: 200,
@@ -50,28 +51,68 @@ db.sequelize.sync({ force }).then(() => {
 
 function initial() {
   try {
-    const password = "tester";
-    const username = "tester";
-    const email = "tester@mail.ru";
+    // const password = "tester";
+    // const username = "tester";
+    // const email = "tester@mail.ru";
 
-    bcrypt.hash(password, rounds, (error, hash) => {
-      if (error) res.status(500).json({ error: error });
-      else {
-        const newUser = User.build({
-          email: email,
-          password: hash,
-          username: username,
-          status: true,
-        });
-        newUser
-          .save()
-          .then((user) => {
-            console.log("user has avtomatic created");
-          })
-          .catch((error) => {
-            console.log(error, "FROM INITIAL FUNCTION IN SERVER");
+    // bcrypt.hash(password, rounds, (error, hash) => {
+    //   if (error) res.status(500).json({ error: error });
+    //   else {
+    //     const newUser = User.build({
+    //       email: email,
+    //       password: hash,
+    //       username: username,
+    //       status: true,
+    //     });
+    //     newUser
+    //       .save()
+    //       .then((user) => {
+    //         console.log("user has avtomatic created");
+    //       })
+    //       .catch((error) => {
+    //         console.log(error, "FROM INITIAL FUNCTION IN SERVER");
+    //       });
+    //   }
+    // });
+
+    const users = [
+      {
+        password: "tester",
+        username: "tester",
+        email: "tester@mail.ru",
+        status: true,
+      },
+      {
+        password: "salami",
+        username: "salami",
+        email: "salami@mail.ru",
+        status: true,
+      },
+    ];
+
+    const bcryptUser = async (user) => {
+      await bcrypt.hash(user.password, rounds, (error, hash) => {
+        if (error) res.status(500).json({ error: error });
+        else {
+          const newUser = User.build({
+            password: hash,
+            username: user.username,
+            email: user.email,
+            status: true,
           });
-      }
+          newUser
+            .save()
+            .then((user) => {
+              console.log("user has avtomatic created");
+            })
+            .catch((error) => {
+              console.log(error, "FROM INITIAL FUNCTION IN SERVER");
+            });
+        }
+      });
+    };
+    users.forEach(async (item) => {
+      await bcryptUser(item);
     });
   } catch (error) {
     comsole.log(error, "FROM INITIAL FUNCTION IN SERVER");
