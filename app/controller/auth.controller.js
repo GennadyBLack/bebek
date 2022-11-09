@@ -110,7 +110,11 @@ exports.updateMe = async (req, res) => {
 };
 
 exports.getFriends = async (req, res) => {
-  await gueryHelper(User, req, res);
+  await User.findByPk(req.user.id).then(async (u) => {
+    const friends = await u.getFriends();
+    res.status(200).send(friends);
+  });
+  // await gueryHelper(User, req, res);
 };
 
 exports.getFriendsRequest = async (req, res) => {
@@ -144,6 +148,10 @@ exports.createFriends = async (req, res) => {
       user_id: userId,
     });
 
+    await FriendsRequest.destroy({
+      where: { friend_id: req.body.user_id, user_id: userId },
+    });
+
     res.status(200).send("Успешно friend");
   } catch (error) {
     res.status(500).send("Error -> " + error);
@@ -156,17 +164,23 @@ exports.updateFriendRequest = async (req, res) => {
     const id = req.params.id;
     const FriendRequest = await FriendsRequest.findByPk(id, {})
       .then((Reqs) => {
-        if (resp === "confirm") {
-          User.findByPk(Reqs.meId, {}).then((user) => {
-            user.createFriends({ friendId: Reqs.requestUserId });
-          });
-        }
-
+        console.log(Reqs, "-------------------------------------------");
         // res.send(Reqs);
       })
       .catch((err) => {
         res.status(500).send("Error -> " + err);
       });
+  } catch (error) {
+    res.status(500).send("Error -> " + error);
+  }
+};
+
+exports.deleteFriendRequest = async (req, res) => {
+  try {
+    await FriendsRequest.destroy({
+      where: { friend_id: req.body.user_id, user_id: userId },
+    });
+    res.status(200).send("success");
   } catch (error) {
     res.status(500).send("Error -> " + error);
   }

@@ -29,4 +29,10 @@ module.exports = function (app) {
     middleware.verify,
     auth.updateFriendRequest
   );
+
+  app.delete(
+    "/api/auth/me/friends_request/:id",
+    middleware.verify,
+    auth.deleteFriendRequest
+  );
 };
