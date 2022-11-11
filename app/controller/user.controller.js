@@ -12,7 +12,8 @@ exports.findAll = async (req, res) => {
 
 // Find a Task by Id
 exports.findById = (req, res) => {
-  User.findById(req.params.userId)
+  const include = req.query.include ? req.query.include.split(".") : [];
+  User.findByPk(req.params.userId, { include: include })
     .then((User) => {
       res.send(User);
     })

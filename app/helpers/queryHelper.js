@@ -1,8 +1,8 @@
 const searchBuilder = require("sequelize-search-builder");
 const db = require("../config/db.config");
 const queryHelper = async (model, req, res) => {
-  const include = req?.params?.include
-    ? req?.params?.include
+  const include = req?.query?.include
+    ? req?.query?.include.split(".")
     : [{ all: true, nested: true }];
   // Set req.query param to Search Builder constructor
   // console.log(Object.keys(db.quiz), "MODEL");
@@ -23,7 +23,6 @@ const queryHelper = async (model, req, res) => {
     // ],
     limitQuery = search.getLimitQuery(),
     offsetQuery = search.getOffsetQuery();
-  // return res.send(orderQuery);
   //TODO:доделать чтобы можно было указывать екстенды иначе слишком много данных тянется
   const data = await model.findAndCountAll({
     include: include,
@@ -35,7 +34,8 @@ const queryHelper = async (model, req, res) => {
   });
   return res.send({
     data: data.rows,
-    meta: [data.count],
+    meta: { count: data.count },
   });
 };
+
 module.exports = queryHelper;

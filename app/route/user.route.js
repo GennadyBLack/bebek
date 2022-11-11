@@ -10,13 +10,13 @@ module.exports = function (app) {
   app.get("/api/users/test", user.test);
 
   // Retrieve a single Customer by Id
-  app.get("/api/user/:userId", user.findById);
+  app.get("/api/users/:userId", user.findById);
 
   // Update a Customer with Id
-  app.put("/api/user/:userId", user.update);
+  app.put("/api/users/:userId", user.update);
 
   // Delete a Customer with Id
-  app.delete("/api/user/:userId", user.delete);
+  app.delete("/api/users/:userId", user.delete);
 
   app.post("/api/users/:userId/chat", user.createChat);
 
