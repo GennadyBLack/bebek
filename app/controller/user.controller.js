@@ -2,6 +2,7 @@
 // Model.findAll({
 //     attributes: ['foo', 'bar'],
 // })  SELECT foo, bar FROM ...;
+const sendError = require("../helpers/errorHelper");
 const db = require("../config/db.config.js");
 const User = db.user;
 const gueryHelper = require("../helpers/queryHelper");
@@ -12,14 +13,18 @@ exports.findAll = async (req, res) => {
 
 // Find a Task by Id
 exports.findById = (req, res) => {
-  const include = req.query.include ? req.query.include.split(".") : [];
-  User.findByPk(req.params.userId, { include: include })
-    .then((User) => {
-      res.send(User);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
-    });
+  try {
+    const include = req.query.include ? req.query.include.split(".") : [];
+    User.findByPk(req.params.userId, { include: include })
+      .then((User) => {
+        res.send(User);
+      })
+      .catch((error) => {
+        sendError(res, error);
+      });
+  } catch (error) {
+    sendError(res, error);
+  }
 };
 
 // Update a Task
@@ -34,7 +39,7 @@ exports.update = (req, res) => {
       res.status(200).send(User);
     })
     .catch((err) => {
-      res.status(500).json({ error: err });
+      sendError(res, err);
     });
 };
 
@@ -48,7 +53,7 @@ exports.delete = (req, res) => {
       res.status(200).send("Task has been deleted!");
     })
     .catch((err) => {
-      res.status(500).json({ error: err });
+      sendError(res, err);
     });
 };
 exports.test = (req, res) => {
@@ -58,7 +63,7 @@ exports.test = (req, res) => {
       res.send(users);
     })
     .catch((err) => {
-      res.status(500).json({ error: err });
+      sendError(res, err);
     });
 };
 
@@ -72,7 +77,7 @@ exports.createChat = (req, res) => {
         res.send(User);
       })
       .catch((err) => {
-        res.status(500).json({ error: err });
+        sendError(res, err);
       });
   } catch (error) {
     console.log(error, "ERROR FROM USER CONROLLER");
@@ -87,6 +92,6 @@ exports.findUserChats = async (req, res) => {
 
     res.status(200).send(chats);
   } catch (error) {
-    res.status(500).json({ error: error });
+    sendError(res, error);
   }
 };

@@ -34,7 +34,11 @@ const queryHelper = async (model, req, res) => {
   });
   return res.send({
     data: data.rows,
-    meta: { count: data.count },
+    meta: {
+      count: data.count,
+      limit: limitQuery,
+      offset: offsetQuery,
+    },
   });
 };
 
