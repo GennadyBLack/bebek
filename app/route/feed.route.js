@@ -32,5 +32,5 @@ module.exports = function (app) {
   );
   app.get("/api/feeds/comments/:feedId", feed.getCommentsByFeedId);
 
-  app.get("/api/feeds/comments", feed.getComments);
+  app.get("/api/feed/comments", feed.getComments);
 };

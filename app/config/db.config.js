@@ -71,7 +71,7 @@ db.feed.belongsTo(db.user);
 db.user.hasMany(db.visit, { onDelete: "CASCADE" });
 db.visit.belongsTo(db.visit);
 
-db.feed.hasMany(db.comment, { onDelete: "CASCADE" });
+db.feed.hasMany(db.comment);
 db.comment.belongsTo(db.user);
 
 //quiz
@@ -101,18 +101,18 @@ db.user.belongsToMany(db.user, {
   through: db.usersFriends,
 });
 
-db.user.belongsToMany(db.userPage, {
-  as: "pagePosts",
-  foreignKey: "user_id",
+// db.user.belongsToMany(db.userPage, {
+//   as: "pagePosts",
+//   foreignKey: "user_id",
 
-  through: db.usersFriends,
-});
+//   through: db.usersFriends,
+// });
 
-db.userPage.belongsToMany(db.user, {
-  as: "pagePosts",
-  foreignKey: "page_id",
-  through: db.usersFriends,
-});
+// db.userPage.belongsToMany(db.user, {
+//   as: "pagePosts",
+//   foreignKey: "page_id",
+//   through: db.usersFriends,
+// });
 
 db.user.belongsToMany(db.user, {
   as: "friendsRequest",

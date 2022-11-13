@@ -99,7 +99,7 @@ exports.createComments = async (req, res) => {
     await Comment.create({
       title: req.body.title,
       userId: req.user.id,
-      feedId: req.params.feedId,
+      feedId: Number(req.params.feedId),
     })
       .then((response) => {
         res.status(200).json(response);
@@ -151,8 +151,6 @@ exports.getCommentsByFeedId = async (req, res) => {
       feedId: req.params.feedId,
     },
     include: ["user"],
-    // order: [["id", "DESC"]],
-    // include: "user",
   };
 
   await Comment.findAndCountAll({ limit, offset, ...condition })
