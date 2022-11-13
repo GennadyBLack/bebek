@@ -7,14 +7,16 @@ const queryHelper = async (model, req, res) => {
     const include = req?.query?.include
       ? req?.query?.include?.split(".")
       : [{ all: true, nested: true }];
-    // Set req.query param to Search Builder constructor
-    // console.log(Object.keys(db.quiz), "MODEL");
+
     const query = {};
+
     for (const key in req.query) {
-      if (typeof req.query[key] === "string") {
-        query[key] = JSON.parse(req.query[key]);
-      } else {
-        query[key] = req.query[key];
+      if (key !== "include") {
+        if (typeof req.query[key] === "string") {
+          query[key] = JSON.parse(req.query[key]);
+        } else {
+          query[key] = req.query[key];
+        }
       }
     }
     const search = new searchBuilder(db.Sequelize, query).setConfig({
