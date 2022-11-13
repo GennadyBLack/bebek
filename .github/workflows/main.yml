@@ -15,6 +15,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SERVER_KEY }}
           script: |
             cd /var/www/html/bebek
+            pm2 stop all
             git pull
             npm install
             npm run start
